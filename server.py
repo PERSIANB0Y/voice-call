@@ -2,7 +2,12 @@
 server.py — FastAPI signaling + static + file store for a WebRTC voice/video room.
 
 Admin password is randomly generated on each startup and printed to the console.
-It is required to mute users or access admin controls.
+
+Custom sounds: drop .mp3/.ogg/.wav/.m4a files into static/sounds/ OR upload
+them from the admin panel. They're auto-discovered and served alongside the
+built-in synthesized clips.
+
+Uploads are streamed to disk in 1 MB chunks — no size limit.
 """
 
 from __future__ import annotations
@@ -20,7 +25,7 @@ from collections import deque
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, File, UploadFile, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, File, Form, UploadFile, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -30,28 +35,34 @@ log = logging.getLogger("voicechat")
 BASE_DIR = Path(__file__).resolve().parent
 STATIC_DIR = BASE_DIR / "static"
 INDEX_FILE = STATIC_DIR / "index.html"
+FAVICON_FILE = BASE_DIR / "favicon.ico"
 FILES_DIR = BASE_DIR / "files"
 FILES_DIR.mkdir(exist_ok=True)
+SOUNDS_DIR = STATIC_DIR / "sounds"
+SOUNDS_DIR.mkdir(parents=True, exist_ok=True)
+
+AUDIO_EXTS = {".mp3", ".ogg", ".wav", ".m4a", ".webm", ".opus", ".flac"}
 
 # --- Tunables --------------------------------------------------------------
 MAX_PEERS = 12
 MAX_MSG_BYTES = 64 * 1024
-MAX_FILE_BYTES = 50 * 1024 * 1024
+MAX_SOUND_BYTES = 5 * 1024 * 1024
 HELLO_TIMEOUT = 15.0
 SEP = (",", ":")
 
-# Sound pad rate limits
-SOUND_MIN_GAP = 1.0        # min seconds between two sounds by the same peer
-SOUND_MAX_PER_MIN = 10     # max sounds per rolling 60s window
+SOUND_MIN_GAP = 1.0
+SOUND_MAX_PER_MIN = 10
 
-# Admin password (regenerated at each startup, printed to console)
 ADMIN_PASSWORD = "".join(
     secrets.choice(string.ascii_uppercase + string.digits) for _ in range(6)
 )
 
+BUILTIN_SOUNDS = {
+    "yes", "no", "here", "come", "hello", "wait",
+    "stop", "clap", "success", "error", "ping", "alert",
+}
 
-# ---------------------------------------------------------------------------
-# Room model
+
 # ---------------------------------------------------------------------------
 class Peer:
     __slots__ = ("id", "name", "ws", "muted", "video", "screen",
@@ -70,13 +81,9 @@ class Peer:
 
     def public(self) -> dict[str, Any]:
         return {
-            "id": self.id,
-            "name": self.name,
-            "muted": self.muted,
-            "video": self.video,
-            "screen": self.screen,
-            "isAdmin": self.is_admin,
-            "mutedByAdmin": self.muted_by_admin,
+            "id": self.id, "name": self.name, "muted": self.muted,
+            "video": self.video, "screen": self.screen,
+            "isAdmin": self.is_admin, "mutedByAdmin": self.muted_by_admin,
         }
 
 
@@ -117,8 +124,6 @@ ROOMS_LOCK = asyncio.Lock()
 
 
 # ---------------------------------------------------------------------------
-# App
-# ---------------------------------------------------------------------------
 app = FastAPI(title="VoiceChat", docs_url=None, redoc_url=None, openapi_url=None)
 
 if STATIC_DIR.is_dir():
@@ -134,6 +139,14 @@ async def index() -> FileResponse:
                         headers={"Cache-Control": "no-cache"})
 
 
+@app.get("/favicon.ico")
+async def favicon():
+    if FAVICON_FILE.is_file():
+        return FileResponse(FAVICON_FILE, media_type="image/x-icon",
+                            headers={"Cache-Control": "public, max-age=86400"})
+    return JSONResponse(status_code=204, content=None)
+
+
 @app.get("/health")
 async def health() -> JSONResponse:
     return JSONResponse({
@@ -144,7 +157,71 @@ async def health() -> JSONResponse:
 
 
 # ---------------------------------------------------------------------------
-# File upload
+# Custom sounds
+# ---------------------------------------------------------------------------
+def scan_custom_sounds() -> list[dict[str, str]]:
+    out = []
+    if not SOUNDS_DIR.is_dir():
+        return out
+    for f in sorted(SOUNDS_DIR.iterdir()):
+        if f.is_file() and f.suffix.lower() in AUDIO_EXTS:
+            nice = f.stem.replace("_", " ").replace("-", " ").strip()
+            nice = " ".join(w.capitalize() for w in nice.split()) or f.stem
+            out.append({
+                "id": f"file:{f.stem}",
+                "name": nice[:40],
+                "url": f"/static/sounds/{f.name}",
+            })
+    return out
+
+
+@app.get("/sounds")
+async def list_sounds() -> JSONResponse:
+    return JSONResponse({
+        "custom": scan_custom_sounds(),
+        "builtin": sorted(BUILTIN_SOUNDS),
+    })
+
+
+@app.post("/sounds/upload")
+async def upload_sound(password: str = Form(...), file: UploadFile = File(...)):
+    if password != ADMIN_PASSWORD:
+        return JSONResponse({"error": "unauthorized"}, status_code=403)
+    orig = (file.filename or "sound").replace("\\", "/").split("/")[-1][:120]
+    ext = Path(orig).suffix.lower()
+    if ext not in AUDIO_EXTS:
+        return JSONResponse({"error": "unsupported format"}, status_code=400)
+    stem = Path(orig).stem
+    safe = "".join(c for c in stem if c.isalnum() or c in "._- ")[:60].strip() or "sound"
+    dest = SOUNDS_DIR / f"{safe}{ext}"
+    i = 1
+    while dest.exists():
+        dest = SOUNDS_DIR / f"{safe}_{i}{ext}"
+        i += 1
+    size = 0
+    try:
+        with dest.open("wb") as f:
+            while True:
+                chunk = await file.read(1 << 18)
+                if not chunk:
+                    break
+                size += len(chunk)
+                if size > MAX_SOUND_BYTES:
+                    f.close()
+                    dest.unlink(missing_ok=True)
+                    return JSONResponse({"error": "sound too large (max 5 MB)"}, status_code=413)
+                f.write(chunk)
+    except Exception as e:
+        dest.unlink(missing_ok=True)
+        log.exception("sound upload failed")
+        return JSONResponse({"error": str(e)}, status_code=500)
+    log.info("custom sound uploaded: %s (%d bytes)", dest.name, size)
+    return {"ok": True, "id": f"file:{dest.stem}", "name": dest.stem,
+            "url": f"/static/sounds/{dest.name}"}
+
+
+# ---------------------------------------------------------------------------
+# File uploads — no size limit, streamed to disk in 1 MB chunks
 # ---------------------------------------------------------------------------
 @app.post("/upload/{room_id}")
 async def upload(room_id: str, file: UploadFile = File(...)):
@@ -162,14 +239,10 @@ async def upload(room_id: str, file: UploadFile = File(...)):
     try:
         with dest.open("wb") as f:
             while True:
-                chunk = await file.read(1 << 20)
+                chunk = await file.read(1 << 20)  # 1 MB chunks
                 if not chunk:
                     break
                 size += len(chunk)
-                if size > MAX_FILE_BYTES:
-                    f.close()
-                    dest.unlink(missing_ok=True)
-                    return JSONResponse({"error": "file too large"}, status_code=413)
                 f.write(chunk)
     except Exception as e:
         dest.unlink(missing_ok=True)
@@ -187,17 +260,12 @@ async def upload(room_id: str, file: UploadFile = File(...)):
 
 
 # ---------------------------------------------------------------------------
-# Sound rate limiting
-# ---------------------------------------------------------------------------
 def sound_allowed(peer: Peer) -> bool:
     now = time.time()
-    # Drop samples older than 60s
     while peer.sound_times and now - peer.sound_times[0] > 60:
         peer.sound_times.popleft()
-    # Min gap
     if peer.sound_times and now - peer.sound_times[-1] < SOUND_MIN_GAP:
         return False
-    # Max per minute
     if len(peer.sound_times) >= SOUND_MAX_PER_MIN:
         return False
     peer.sound_times.append(now)
@@ -205,11 +273,6 @@ def sound_allowed(peer: Peer) -> bool:
 
 
 # ---------------------------------------------------------------------------
-# Signaling
-# ---------------------------------------------------------------------------
-ALLOWED_SOUNDS = {"yes", "no", "here", "come", "hello", "wait"}
-
-
 async def handle_signal(room: Room, peer: Peer, msg: dict[str, Any]) -> None:
     t = msg.get("t")
 
@@ -228,7 +291,6 @@ async def handle_signal(room: Room, peer: Peer, msg: dict[str, Any]) -> None:
         peer.muted = bool(msg.get("muted"))
         peer.video = bool(msg.get("video"))
         peer.screen = bool(msg.get("screen"))
-        # If muted by admin, keep them muted regardless of client claim
         if peer.muted_by_admin:
             peer.muted = True
         await room.broadcast(
@@ -246,10 +308,19 @@ async def handle_signal(room: Room, peer: Peer, msg: dict[str, Any]) -> None:
             )
 
     elif t == "sound":
-        sid = msg.get("sound")
-        if sid not in ALLOWED_SOUNDS:
+        sid = str(msg.get("sound", ""))[:64]
+        if not sid:
             return
-        if not sound_allowed(peer):
+        if sid.startswith("file:"):
+            stem = sid[5:]
+            if not any(f.stem == stem and f.suffix.lower() in AUDIO_EXTS
+                       for f in SOUNDS_DIR.iterdir() if f.is_file()):
+                return
+        elif sid not in BUILTIN_SOUNDS:
+            return
+
+        force = bool(msg.get("force")) and peer.is_admin
+        if not force and not sound_allowed(peer):
             await room.send_to(peer.id, {"t": "sound-ratelimit"})
             return
         await room.broadcast(
@@ -260,7 +331,8 @@ async def handle_signal(room: Room, peer: Peer, msg: dict[str, Any]) -> None:
     elif t == "admin-login":
         if str(msg.get("password", "")) == ADMIN_PASSWORD:
             peer.is_admin = True
-            await room.send_to(peer.id, {"t": "admin-ok", "peers": [p.public() for p in room.peers.values()]})
+            await room.send_to(peer.id, {"t": "admin-ok",
+                "peers": [p.public() for p in room.peers.values()]})
             await room.broadcast({"t": "peer-state", "id": peer.id,
                                   "muted": peer.muted, "video": peer.video,
                                   "screen": peer.screen, "isAdmin": True},
@@ -382,6 +454,7 @@ def main() -> None:
     args = ap.parse_args()
 
     scheme = "https" if args.ssl_certfile else "http"
+    custom = scan_custom_sounds()
 
     print()
     print("=" * 60)
@@ -389,6 +462,9 @@ def main() -> None:
     print("=" * 60)
     print(f"  URL            : {scheme}://{args.host}:{args.port}")
     print(f"  Uploads folder : {FILES_DIR}")
+    print(f"  Sounds folder  : {SOUNDS_DIR}")
+    if custom:
+        print(f"  Custom sounds  : {len(custom)} found")
     print()
     print(f"  *** ADMIN PASSWORD: {ADMIN_PASSWORD} ***")
     print()
@@ -398,16 +474,10 @@ def main() -> None:
     print()
 
     uvicorn.run(
-        app,
-        host=args.host,
-        port=args.port,
-        reload=args.reload,
-        log_level="info",
-        access_log=False,
-        ws_ping_interval=20,
-        ws_ping_timeout=20,
-        ssl_keyfile=args.ssl_keyfile,
-        ssl_certfile=args.ssl_certfile,
+        app, host=args.host, port=args.port, reload=args.reload,
+        log_level="info", access_log=False,
+        ws_ping_interval=20, ws_ping_timeout=20,
+        ssl_keyfile=args.ssl_keyfile, ssl_certfile=args.ssl_certfile,
     )
 
 

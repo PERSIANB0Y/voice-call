@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
     <title>VoiceChat</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <style>
         * {
             box-sizing: border-box;
@@ -39,6 +40,7 @@
             --ease-out: cubic-bezier(.16, 1, .3, 1);
             --bounce: cubic-bezier(.34, 1.56, .64, 1);
             --panel-w: 360px;
+            --safe-b: env(safe-area-inset-bottom, 0px);
             --shadow-1: 0 1px 2px rgba(0, 0, 0, .35);
             --shadow-2: 0 6px 20px rgba(0, 0, 0, .4);
             --shadow-3: 0 20px 60px rgba(0, 0, 0, .55);
@@ -49,7 +51,7 @@
         body.no-anim *::before,
         body.no-anim *::after {
             transition: none !important;
-            animation: none !important;
+            animation: none !important
         }
 
         html,
@@ -155,7 +157,6 @@
             background-clip: padding-box
         }
 
-        /* SVG icons */
         .ic {
             width: 20px;
             height: 20px;
@@ -174,10 +175,10 @@
             stroke-width: 2
         }
 
-        .ic-lg {
-            width: 24px;
-            height: 24px;
-            stroke-width: 1.6
+        .ic-xs {
+            width: 12px;
+            height: 12px;
+            stroke-width: 2.5
         }
 
         #banner {
@@ -201,7 +202,6 @@
             transform: translateY(0)
         }
 
-        /* JOIN */
         #join {
             position: fixed;
             inset: 0;
@@ -210,7 +210,7 @@
             justify-content: center;
             padding: 1rem;
             z-index: 100;
-            transition: opacity .35s var(--ease);
+            transition: opacity .35s var(--ease)
         }
 
         #join.fade {
@@ -261,7 +261,7 @@
             align-items: center;
             justify-content: center;
             color: #fff;
-            box-shadow: 0 10px 32px var(--accent-glow);
+            box-shadow: 0 10px 32px var(--accent-glow)
         }
 
         .card h1 {
@@ -301,7 +301,7 @@
             align-items: center;
             justify-content: center;
             gap: .5rem;
-            transition: all .18s var(--ease);
+            transition: all .18s var(--ease)
         }
 
         .btn:hover {
@@ -318,18 +318,12 @@
             background: linear-gradient(135deg, var(--accent), var(--accent-2));
             border: none;
             color: #fff;
-            box-shadow: 0 8px 28px var(--accent-glow);
+            box-shadow: 0 8px 28px var(--accent-glow)
         }
 
         .btn.primary:hover {
             filter: brightness(1.12);
             box-shadow: 0 12px 40px var(--accent-glow)
-        }
-
-        .btn.danger {
-            background: var(--danger);
-            border-color: var(--danger);
-            color: #fff
         }
 
         .btn.ghost {
@@ -343,9 +337,6 @@
             flex-direction: column
         }
 
-        /* =========================================================
-   STAGE — Google-Meet style grid
-   ========================================================= */
         #stage {
             flex: 1;
             min-height: 0;
@@ -362,7 +353,7 @@
             align-items: flex-start;
             justify-content: center;
             transition: padding-right .35s var(--ease-out);
-            scroll-behavior: smooth;
+            scroll-behavior: smooth
         }
 
         #stage.with-panel #gridWrap {
@@ -376,12 +367,11 @@
             max-width: 1400px;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             align-content: start;
-            justify-content: center;
+            justify-content: center
         }
 
-        /* Single tile = centered, capped size */
         #grid:has(> .tile:only-child) {
-            max-width: 1000px;
+            max-width: 1000px
         }
 
         .tile {
@@ -391,11 +381,10 @@
             border-radius: var(--r-lg);
             overflow: hidden;
             border: 1px solid var(--border);
-            transition: box-shadow .25s var(--ease), transform .4s var(--bounce),
-                opacity .3s var(--ease), border-color .25s var(--ease);
+            transition: box-shadow .25s var(--ease), transform .4s var(--bounce), opacity .3s var(--ease), border-color .25s var(--ease);
             animation: tileIn .45s var(--ease-out);
             --level: 0;
-            box-shadow: var(--shadow-1);
+            box-shadow: var(--shadow-1)
         }
 
         @keyframes tileIn {
@@ -433,19 +422,18 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            background: #000;
+            background: #000
         }
 
         .tile.mirror video {
             transform: scaleX(-1)
         }
 
-        /* Spotlight (screen share) — takes full row, contains full frame */
         .tile.spotlight {
             grid-column: 1/-1;
             aspect-ratio: auto;
-            height: min(calc(100vh - 180px), calc(100vw * 0.6));
-            max-height: calc(100vh - 160px);
+            height: min(calc(100vh - 180px), calc(100vw * .6));
+            max-height: calc(100vh - 160px)
         }
 
         .tile.spotlight video {
@@ -455,10 +443,7 @@
 
         .tile.speaking {
             border-color: color-mix(in srgb, var(--ok) 55%, transparent);
-            box-shadow:
-                0 0 0 1px color-mix(in srgb, var(--ok) 45%, transparent),
-                0 0 40px color-mix(in srgb, var(--ok) calc(var(--level) * 55%), transparent),
-                var(--shadow-2);
+            box-shadow: 0 0 0 1px color-mix(in srgb, var(--ok) 45%, transparent), 0 0 40px color-mix(in srgb, var(--ok) calc(var(--level) * 55%), transparent), var(--shadow-2)
         }
 
         .tile .ring {
@@ -467,7 +452,7 @@
             border-radius: inherit;
             pointer-events: none;
             box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--ok) calc(var(--level) * 85%), transparent);
-            transition: box-shadow .09s linear;
+            transition: box-shadow .09s linear
         }
 
         .tile .label {
@@ -490,7 +475,7 @@
             align-items: center;
             gap: .35rem;
             border: 1px solid rgba(255, 255, 255, .07);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, .35);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .35)
         }
 
         .tile .label::before {
@@ -501,7 +486,7 @@
             background: var(--ok);
             opacity: .6;
             flex-shrink: 0;
-            box-shadow: 0 0 6px var(--ok);
+            box-shadow: 0 0 6px var(--ok)
         }
 
         .tile .label .admin-star {
@@ -515,7 +500,7 @@
             right: .7rem;
             display: flex;
             gap: .35rem;
-            transition: opacity .2s var(--ease);
+            transition: opacity .2s var(--ease)
         }
 
         .badge {
@@ -530,7 +515,7 @@
             align-items: center;
             gap: .3rem;
             letter-spacing: .01em;
-            border: 1px solid rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .08)
         }
 
         .badge .ic {
@@ -566,7 +551,7 @@
             display: none;
             align-items: flex-end;
             gap: 2px;
-            pointer-events: none;
+            pointer-events: none
         }
 
         .tile.viz-on .viz {
@@ -585,7 +570,7 @@
             transform: scaleY(var(--h, 0.05));
             transform-origin: bottom;
             transition: transform .05s linear;
-            box-shadow: 0 0 6px var(--accent-glow);
+            box-shadow: 0 0 6px var(--accent-glow)
         }
 
         .tile .placeholder {
@@ -594,7 +579,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: radial-gradient(circle at 50% 40%, #1a1f2e 0%, #0a0d16 100%);
+            background: radial-gradient(circle at 50% 40%, #1a1f2e 0%, #0a0d16 100%)
         }
 
         .tile.has-video .placeholder {
@@ -613,15 +598,13 @@
             font-weight: 700;
             color: #fff;
             letter-spacing: -.02em;
-            box-shadow: 0 10px 40px var(--accent-glow),
-                inset 0 1px 0 rgba(255, 255, 255, .2);
-            transition: transform .3s var(--ease-out), box-shadow .3s var(--ease);
+            box-shadow: 0 10px 40px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, .2);
+            transition: transform .3s var(--ease-out), box-shadow .3s var(--ease)
         }
 
         .tile.speaking .placeholder .avatar {
             transform: scale(calc(1 + var(--level) * .14));
-            box-shadow: 0 10px 44px color-mix(in srgb, var(--ok) calc(30% + var(--level) * 50%), transparent),
-                inset 0 1px 0 rgba(255, 255, 255, .2);
+            box-shadow: 0 10px 44px color-mix(in srgb, var(--ok) calc(30% + var(--level) * 50%), transparent), inset 0 1px 0 rgba(255, 255, 255, .2)
         }
 
         .tile .tileActions {
@@ -631,7 +614,7 @@
             display: flex;
             gap: .3rem;
             opacity: 0;
-            transition: opacity .2s var(--ease);
+            transition: opacity .2s var(--ease)
         }
 
         .tile:hover .tileActions {
@@ -649,7 +632,7 @@
             color: #fff;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: center
         }
 
         .tile .tileActions button:hover {
@@ -669,7 +652,7 @@
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transition: opacity .2s var(--ease);
+            transition: opacity .2s var(--ease)
         }
 
         .tile:hover .drag-handle {
@@ -682,10 +665,9 @@
             height: 3px;
             border-radius: 2px;
             background: #fff;
-            box-shadow: 0 -5px 0 #fff, 0 5px 0 #fff;
+            box-shadow: 0 -5px 0 #fff, 0 5px 0 #fff
         }
 
-        /* SIDE PANEL */
         #sidePanel {
             position: absolute;
             top: 0;
@@ -700,7 +682,7 @@
             flex-direction: column;
             transform: translateX(100%);
             transition: transform .35s var(--ease-out);
-            z-index: 15;
+            z-index: 15
         }
 
         #stage.with-panel #sidePanel {
@@ -712,7 +694,7 @@
             align-items: stretch;
             gap: .15rem;
             padding: .5rem .5rem 0;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid var(--border)
         }
 
         .tab {
@@ -729,7 +711,7 @@
             justify-content: center;
             gap: .35rem;
             position: relative;
-            transition: all .18s var(--ease);
+            transition: all .18s var(--ease)
         }
 
         .tab .ic {
@@ -758,7 +740,7 @@
             background: var(--accent);
             border-radius: 2px;
             filter: blur(.5px);
-            box-shadow: 0 0 12px var(--accent);
+            box-shadow: 0 0 12px var(--accent)
         }
 
         .tab .dot {
@@ -767,7 +749,7 @@
             border-radius: 50%;
             background: var(--accent-2);
             display: inline-block;
-            box-shadow: 0 0 8px var(--accent-glow-2);
+            box-shadow: 0 0 8px var(--accent-glow-2)
         }
 
         .tabClose {
@@ -788,7 +770,7 @@
             min-height: 0;
             display: flex;
             flex-direction: column;
-            animation: tabIn .28s var(--ease-out);
+            animation: tabIn .28s var(--ease-out)
         }
 
         @keyframes tabIn {
@@ -820,7 +802,7 @@
             animation: msgIn .32s var(--ease-out);
             display: flex;
             flex-direction: column;
-            gap: .2rem;
+            gap: .2rem
         }
 
         @keyframes msgIn {
@@ -842,7 +824,7 @@
             align-items: center;
             gap: .4rem;
             font-weight: 500;
-            letter-spacing: .02em;
+            letter-spacing: .02em
         }
 
         .tlItem .who {
@@ -868,15 +850,13 @@
             border-radius: 12px;
             border: 1px solid var(--border);
             align-self: flex-start;
-            max-width: 92%;
+            max-width: 92%
         }
 
         .tlItem.self .body {
-            background: linear-gradient(135deg,
-                    color-mix(in srgb, var(--accent) 22%, transparent),
-                    color-mix(in srgb, var(--accent-2) 18%, transparent));
+            background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 22%, transparent), color-mix(in srgb, var(--accent-2) 18%, transparent));
             border-color: color-mix(in srgb, var(--accent) 30%, transparent);
-            align-self: flex-end;
+            align-self: flex-end
         }
 
         .tlItem.sound .bubble {
@@ -890,7 +870,7 @@
             font-weight: 600;
             font-size: .82rem;
             box-shadow: 0 6px 20px var(--accent-glow);
-            align-self: flex-start;
+            align-self: flex-start
         }
 
         .tlItem.sound .bubble .ic {
@@ -899,57 +879,81 @@
             stroke-width: 2.4
         }
 
-        .tlItem.file .fileChip {
+        .tlItem.file {
+            max-width: 100%
+        }
+
+        .fileChat {
             display: flex;
-            align-items: center;
-            gap: .7rem;
-            padding: .6rem .75rem;
+            flex-direction: column;
+            gap: .4rem;
             background: var(--surface-2);
             border: 1px solid var(--border);
-            border-radius: var(--r);
-            transition: all .18s var(--ease);
-            cursor: pointer;
-            align-self: stretch;
+            border-radius: 12px;
+            padding: .5rem;
+            max-width: 100%;
+            align-self: flex-start;
+            overflow: hidden
         }
 
-        .tlItem.file .fileChip:hover {
-            border-color: color-mix(in srgb, var(--accent) 50%, transparent);
-            background: color-mix(in srgb, var(--accent) 8%, var(--surface-2));
-            transform: translateY(-1px);
+        .tlItem.self .fileChat {
+            align-self: flex-end
         }
 
-        .tlItem.file .fileChip .icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            background: var(--bg);
+        .chatMedia {
+            display: block;
+            max-width: 100%;
+            max-height: 280px;
+            border-radius: 10px;
+            object-fit: cover;
+            background: #000;
+            cursor: zoom-in
+        }
+
+        video.chatMedia {
+            cursor: default
+        }
+
+        .chatAudio {
+            width: 100%;
+            height: 36px
+        }
+
+        .fileFooter {
             display: flex;
             align-items: center;
-            justify-content: center;
-            background-size: cover;
-            background-position: center;
-            flex-shrink: 0;
-            color: var(--text-2);
-            border: 1px solid var(--border);
+            gap: .5rem;
+            font-size: .75rem;
+            padding: 0 .15rem
         }
 
-        .tlItem.file .fileChip .info {
+        .fileName {
             flex: 1;
-            min-width: 0
-        }
-
-        .tlItem.file .fileChip .nm {
-            font-size: .82rem;
-            font-weight: 500;
+            min-width: 0;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            font-weight: 500
         }
 
-        .tlItem.file .fileChip .sz {
-            font-size: .7rem;
+        .fileSize {
             color: var(--text-3);
-            margin-top: .1rem
+            font-variant-numeric: tabular-nums;
+            font-size: .7rem
+        }
+
+        .fileDlBtn {
+            color: var(--text-3);
+            text-decoration: none;
+            display: flex;
+            padding: .2rem;
+            border-radius: 6px;
+            transition: all .15s var(--ease)
+        }
+
+        .fileDlBtn:hover {
+            color: var(--accent);
+            background: rgba(255, 255, 255, .06)
         }
 
         #chatForm {
@@ -957,7 +961,7 @@
             gap: .5rem;
             padding: .8rem;
             border-top: 1px solid var(--border);
-            background: rgba(0, 0, 0, .15);
+            background: rgba(0, 0, 0, .15)
         }
 
         #chatForm input {
@@ -976,7 +980,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 14px var(--accent-glow);
+            box-shadow: 0 4px 14px var(--accent-glow)
         }
 
         #chatForm button:hover {
@@ -992,13 +996,13 @@
             text-align: center;
             cursor: pointer;
             transition: all .2s var(--ease);
-            background: rgba(255, 255, 255, .01);
+            background: rgba(255, 255, 255, .01)
         }
 
         #dropZone:hover,
         #dropZone.hot {
             border-color: var(--accent);
-            background: color-mix(in srgb, var(--accent) 8%, transparent);
+            background: color-mix(in srgb, var(--accent) 8%, transparent)
         }
 
         #dropZone .dzIcon {
@@ -1006,7 +1010,7 @@
             height: 44px;
             margin: 0 auto .55rem;
             color: var(--text-3);
-            transition: color .2s var(--ease);
+            transition: color .2s var(--ease)
         }
 
         #dropZone:hover .dzIcon,
@@ -1024,66 +1028,165 @@
             font-weight: 600
         }
 
+        /* ===== Upload queue — new slider style ===== */
         #uploadQueue {
             padding: 0 1rem;
             display: flex;
             flex-direction: column;
-            gap: .4rem
+            gap: .55rem
         }
 
         .upItem {
             display: flex;
-            align-items: center;
-            gap: .6rem;
-            padding: .55rem .7rem;
+            flex-direction: column;
+            gap: .55rem;
+            padding: .75rem .85rem;
             background: var(--surface-2);
-            border-radius: var(--r-sm);
+            border-radius: var(--r);
             font-size: .78rem;
             border: 1px solid var(--border);
             animation: msgIn .25s var(--ease-out);
+            transition: opacity .3s var(--ease), border-color .2s var(--ease);
+        }
+
+        .upItem .upTop {
+            display: flex;
+            align-items: center;
+            gap: .55rem
+        }
+
+        .upItem .upIcon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-3);
+            flex-shrink: 0;
+        }
+
+        .upItem .upIcon .ic {
+            width: 15px;
+            height: 15px
         }
 
         .upItem .upName {
             flex: 1;
+            min-width: 0;
             overflow: hidden;
             text-overflow: ellipsis;
-            white-space: nowrap
+            white-space: nowrap;
+            font-weight: 500
         }
 
-        .upItem .upBar {
-            flex: 0 0 60px;
-            height: 3px;
-            background: var(--border);
-            border-radius: 2px;
-            overflow: hidden;
+        .upItem .upStat {
+            font-size: .7rem;
+            color: var(--text-3);
+            font-variant-numeric: tabular-nums;
+            flex-shrink: 0
+        }
+
+        .upItem .upTrack {
             position: relative;
+            height: 8px;
+            border-radius: 6px;
+            background: var(--border);
+            overflow: hidden;
         }
 
-        .upItem .upBar::after {
+        .upItem .upTrack::after {
             content: "";
             position: absolute;
             left: 0;
             top: 0;
             bottom: 0;
-            background: linear-gradient(90deg, var(--accent), var(--accent-2));
             width: var(--p, 0%);
-            transition: width .15s var(--ease);
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            border-radius: 6px;
+            transition: width .2s var(--ease);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .upItem .upTrack::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .15), transparent);
+            animation: shimmer 1.6s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%)
+            }
+
+            100% {
+                transform: translateX(100%)
+            }
+        }
+
+        .upItem .upBottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: .68rem;
+            color: var(--text-3);
+            font-variant-numeric: tabular-nums;
         }
 
         .upItem .upPct {
-            font-size: .7rem;
+            font-size: .85rem;
+            font-weight: 700;
+            color: var(--accent);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .upItem .upCancel {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: var(--text-3);
-            min-width: 2.5rem;
-            text-align: right
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all .15s var(--ease);
+        }
+
+        .upItem .upCancel:hover {
+            background: rgba(255, 68, 102, .15);
+            color: var(--danger)
         }
 
         .upItem.done {
-            opacity: .5
+            opacity: .55;
+            border-color: color-mix(in srgb, var(--ok) 30%, transparent)
+        }
+
+        .upItem.done .upTrack::before {
+            display: none
+        }
+
+        .upItem.done .upPct {
+            color: var(--ok)
         }
 
         .upItem.error {
-            background: color-mix(in srgb, var(--danger) 12%, transparent);
+            background: color-mix(in srgb, var(--danger) 10%, transparent);
             border-color: color-mix(in srgb, var(--danger) 30%, transparent)
+        }
+
+        .upItem.error .upTrack {
+            display: none
+        }
+
+        .upItem.error .upPct {
+            color: var(--danger)
         }
 
         #filesGrid {
@@ -1093,7 +1196,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
             gap: .7rem;
-            align-content: start;
+            align-content: start
         }
 
         .fileCard {
@@ -1105,13 +1208,13 @@
             border: 1px solid var(--border);
             cursor: pointer;
             transition: all .2s var(--ease);
-            animation: msgIn .3s var(--ease-out);
+            animation: msgIn .3s var(--ease-out)
         }
 
         .fileCard:hover {
             transform: translateY(-2px) scale(1.02);
             border-color: color-mix(in srgb, var(--accent) 50%, transparent);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, .3);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .3)
         }
 
         .fileCard .thumb {
@@ -1123,7 +1226,7 @@
             align-items: center;
             justify-content: center;
             background-color: #0a0d16;
-            color: var(--text-3);
+            color: var(--text-3)
         }
 
         .fileCard .fcName {
@@ -1137,7 +1240,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            font-weight: 500;
+            font-weight: 500
         }
 
         .fileCard .fcMeta {
@@ -1149,7 +1252,7 @@
             border-radius: 6px;
             font-size: .65rem;
             font-weight: 600;
-            backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px)
         }
 
         .fileCard .fcDl {
@@ -1168,7 +1271,7 @@
             text-decoration: none;
             opacity: 0;
             transition: all .18s var(--ease);
-            border: 1px solid rgba(255, 255, 255, .1);
+            border: 1px solid rgba(255, 255, 255, .1)
         }
 
         .fileCard:hover .fcDl {
@@ -1183,27 +1286,28 @@
         #soundPad {
             padding: 1rem;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: .7rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: .6rem;
             overflow-y: auto;
             flex: 1;
-            align-content: start;
+            align-content: start
         }
 
         .soundBtn {
-            aspect-ratio: 1.35;
-            border-radius: var(--r-lg);
+            aspect-ratio: 1;
+            border-radius: var(--r);
             background: var(--surface-2);
             border: 1px solid var(--border);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: .45rem;
+            gap: .3rem;
             transition: all .22s var(--bounce);
             position: relative;
             overflow: hidden;
             color: var(--text-2);
+            padding: .35rem;
         }
 
         .soundBtn::before {
@@ -1212,7 +1316,7 @@
             inset: 0;
             background: linear-gradient(135deg, var(--accent), var(--accent-2));
             opacity: 0;
-            transition: opacity .25s var(--ease);
+            transition: opacity .25s var(--ease)
         }
 
         .soundBtn:hover:not(:disabled)::before {
@@ -1223,7 +1327,7 @@
             transform: translateY(-3px);
             border-color: color-mix(in srgb, var(--accent) 40%, transparent);
             color: var(--text);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, .3);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .3)
         }
 
         .soundBtn:active:not(:disabled) {
@@ -1235,30 +1339,45 @@
         }
 
         .soundBtn .si {
-            width: 30px;
-            height: 30px;
+            width: 26px;
+            height: 26px;
             color: var(--accent);
             position: relative;
             z-index: 1;
             transition: transform .2s var(--ease);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, .04);
+            border-radius: 50%;
+            border: 1px solid var(--border);
         }
 
         .soundBtn:hover .si {
-            transform: scale(1.1)
+            transform: scale(1.08);
+            background: rgba(255, 255, 255, .08)
         }
 
-        .soundBtn .si .ic {
-            width: 100%;
-            height: 100%;
-            stroke-width: 1.6
+        .soundBtn .si svg {
+            width: 14px;
+            height: 14px;
+            stroke-width: 2
         }
 
         .soundBtn .sn {
-            font-size: .8rem;
+            font-size: .68rem;
             font-weight: 600;
             letter-spacing: .01em;
             position: relative;
             z-index: 1;
+            text-align: center;
+            line-height: 1.15;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            max-width: 100%;
         }
 
         .soundBtn.firing {
@@ -1288,7 +1407,7 @@
             font-size: .75rem;
             color: var(--text-3);
             text-align: center;
-            border: 1px solid var(--border);
+            border: 1px solid var(--border)
         }
 
         #soundRate b {
@@ -1318,7 +1437,7 @@
             background: var(--surface-2);
             border-radius: var(--r);
             border: 1px dashed var(--border-2);
-            line-height: 1.5;
+            line-height: 1.5
         }
 
         #adminLogin .hint .ic {
@@ -1330,14 +1449,78 @@
         #adminPanel {
             display: flex;
             flex-direction: column;
-            gap: .5rem
+            gap: .9rem
+        }
+
+        .adminControls {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+            padding: .75rem;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+        }
+
+        .adminToggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .7rem;
+            font-size: .82rem;
+            font-weight: 500
+        }
+
+        .adminToggle .desc {
+            font-size: .68rem;
+            color: var(--text-3);
+            font-weight: 400;
+            display: block;
+            margin-top: .1rem
+        }
+
+        .adminUploadBtn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .45rem;
+            padding: .6rem .8rem;
+            border-radius: var(--r-sm);
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-weight: 600;
+            font-size: .8rem;
+            cursor: pointer;
+            transition: all .15s var(--ease);
+        }
+
+        .adminUploadBtn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff
+        }
+
+        .adminUploadHint {
+            font-size: .65rem;
+            color: var(--text-3);
+            text-align: center;
+            font-weight: 400
+        }
+
+        .adminPeersTitle {
+            font-size: .68rem;
+            font-weight: 800;
+            color: var(--text-3);
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            padding: .2rem
         }
 
         .adminPeers {
             display: flex;
             flex-direction: column;
-            gap: .5rem;
-            margin-top: .4rem
+            gap: .5rem
         }
 
         .adminRow {
@@ -1349,7 +1532,7 @@
             border-radius: var(--r);
             font-size: .82rem;
             border: 1px solid var(--border);
-            transition: all .18s var(--ease);
+            transition: all .18s var(--ease)
         }
 
         .adminRow:hover {
@@ -1365,7 +1548,7 @@
             display: flex;
             align-items: center;
             gap: .35rem;
-            font-weight: 500;
+            font-weight: 500
         }
 
         .adminRow .an .star {
@@ -1390,7 +1573,7 @@
             display: inline-flex;
             align-items: center;
             gap: .3rem;
-            transition: all .15s var(--ease);
+            transition: all .15s var(--ease)
         }
 
         .adminRow button .ic {
@@ -1444,7 +1627,7 @@
             border: 1px solid rgba(255, 255, 255, .07);
             color: var(--text-2);
             transition: all .2s var(--bounce);
-            position: relative;
+            position: relative
         }
 
         .ctrl .ic {
@@ -1472,7 +1655,7 @@
             border-color: transparent;
             color: #fff;
             box-shadow: 0 0 24px var(--accent-glow), 0 4px 12px rgba(0, 0, 0, .35);
-            animation: pop .4s var(--bounce);
+            animation: pop .4s var(--bounce)
         }
 
         .ctrl.on:hover {
@@ -1496,7 +1679,7 @@
         .ctrl.off {
             background: color-mix(in srgb, var(--danger) 22%, transparent);
             border-color: color-mix(in srgb, var(--danger) 40%, transparent);
-            color: #ff8ba0;
+            color: #ff8ba0
         }
 
         .ctrl.off:hover {
@@ -1532,39 +1715,393 @@
             display: block
         }
 
-        .ctrl .badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            min-width: 19px;
-            height: 19px;
-            border-radius: 10px;
-            background: var(--accent-2);
-            color: #fff;
-            font-size: .65rem;
-            font-weight: 700;
+        .ctrl-group {
+            position: relative;
+            display: flex;
+            align-items: stretch;
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid rgba(255, 255, 255, .07);
+            border-radius: 999px;
+            transition: all .2s var(--ease)
+        }
+
+        .ctrl-group:hover {
+            background: rgba(255, 255, 255, .1)
+        }
+
+        .ctrl-group.on {
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            border-color: transparent;
+            box-shadow: 0 0 24px var(--accent-glow), 0 4px 12px rgba(0, 0, 0, .35)
+        }
+
+        .ctrl-group.on .ctrl-main,
+        .ctrl-group.on .ctrl-chevron {
+            color: #fff
+        }
+
+        .ctrl-group.off {
+            background: color-mix(in srgb, var(--danger) 22%, transparent);
+            border-color: color-mix(in srgb, var(--danger) 40%, transparent)
+        }
+
+        .ctrl-group.off .ctrl-main,
+        .ctrl-group.off .ctrl-chevron {
+            color: #ff8ba0
+        }
+
+        .ctrl-group .ctrl-main {
+            height: 46px;
+            min-width: 58px;
+            padding: 0 .55rem 0 .95rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 0 5px;
-            border: 2px solid var(--bg);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, .4);
+            border-radius: 999px 0 0 999px;
+            background: transparent;
+            border: none;
+            transition: all .18s var(--ease);
+            color: inherit;
+            position: relative
         }
 
-        .ctrl .badge.hidden {
+        .ctrl-group .ctrl-main .ic {
+            width: 20px;
+            height: 20px
+        }
+
+        .ctrl-group .ctrl-main .ic-off {
             display: none
+        }
+
+        .ctrl-group.off .ctrl-main .ic-on {
+            display: none
+        }
+
+        .ctrl-group.off .ctrl-main .ic-off {
+            display: block
+        }
+
+        .ctrl-group .ctrl-main:hover {
+            background: rgba(255, 255, 255, .05)
+        }
+
+        .ctrl-group.on .ctrl-main:hover {
+            background: rgba(0, 0, 0, .1)
+        }
+
+        .ctrl-group .ctrl-chevron {
+            width: 26px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            border-left: 1px solid rgba(255, 255, 255, .07);
+            border-radius: 0 999px 999px 0;
+            color: inherit;
+            opacity: .65;
+            transition: all .18s var(--ease)
+        }
+
+        .ctrl-group .ctrl-chevron:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, .05)
+        }
+
+        .ctrl-group.on .ctrl-chevron {
+            border-left-color: rgba(0, 0, 0, .15)
+        }
+
+        .ctrl-group.on .ctrl-chevron:hover {
+            background: rgba(0, 0, 0, .1)
+        }
+
+        .ctrl-group .ctrl-chevron .ic {
+            width: 12px;
+            height: 12px;
+            stroke-width: 2.8
+        }
+
+        /* Popups — fixed, JS positioned on desktop, centered sheet on mobile */
+        .popup {
+            position: fixed;
+            bottom: 6rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(8px) scale(.95);
+            width: min(320px, calc(100vw - 2rem));
+            max-height: calc(100vh - 10rem);
+            overflow-y: auto;
+            background: var(--surface-solid);
+            border: 1px solid var(--border-2);
+            border-radius: 16px;
+            padding: 1rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .2s var(--ease-out), transform .25s var(--ease-out);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .65), inset 0 1px 0 rgba(255, 255, 255, .05);
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            gap: .85rem;
+        }
+
+        .popup.open {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(0) scale(1)
+        }
+
+        .popupHead {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: .55rem;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .popupHead h4 {
+            font-size: .8rem;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--text-2);
+            display: flex;
+            align-items: center;
+            gap: .45rem
+        }
+
+        .popupHead h4 .ic {
+            color: var(--accent);
+            width: 15px;
+            height: 15px;
+            stroke-width: 2.2
+        }
+
+        .popupHead .popupClose {
+            width: 26px;
+            height: 26px;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-3)
+        }
+
+        .popupHead .popupClose:hover {
+            background: rgba(255, 255, 255, .06);
+            color: var(--text)
+        }
+
+        .popupField {
+            display: flex;
+            flex-direction: column;
+            gap: .4rem
+        }
+
+        .popupField label {
+            font-size: .68rem;
+            color: var(--text-3);
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase
+        }
+
+        .popupField select,
+        .popupField input[type=text] {
+            padding: .5rem .7rem;
+            font-size: .8rem;
+            border-radius: 8px
+        }
+
+        .popupRow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .7rem;
+            padding: .35rem 0
+        }
+
+        .popupRow .popupRowLabel {
+            font-size: .82rem;
+            font-weight: 500;
+            flex: 1
+        }
+
+        .popupRow .popupRowLabel .desc {
+            font-size: .68rem;
+            color: var(--text-3);
+            display: block;
+            margin-top: .1rem;
+            font-weight: 400
+        }
+
+        .bitrateWrap {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem
+        }
+
+        .bitrateHeader {
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .bitrateValue {
+            display: flex;
+            align-items: baseline;
+            gap: .25rem;
+            font-size: .9rem;
+            font-weight: 700;
+            color: var(--accent);
+            font-variant-numeric: tabular-nums
+        }
+
+        .bitrateValue .unit {
+            font-size: .7rem;
+            font-weight: 600;
+            color: var(--text-3)
+        }
+
+        .bitrateBadge {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 22%, transparent), color-mix(in srgb, var(--accent-2) 18%, transparent));
+            border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+            color: var(--text);
+            padding: .2rem .55rem;
+            border-radius: 999px;
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: .02em
+        }
+
+        .bitrateSlider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            outline: none;
+            padding: 0;
+            border: none;
+            box-shadow: none;
+            cursor: pointer
+        }
+
+        .bitrateSlider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            cursor: pointer;
+            box-shadow: 0 2px 8px var(--accent-glow);
+            border: 2px solid var(--bg);
+            transition: transform .15s var(--ease)
+        }
+
+        .bitrateSlider::-webkit-slider-thumb:hover {
+            transform: scale(1.15)
+        }
+
+        .bitrateSlider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            cursor: pointer;
+            border: 2px solid var(--bg)
+        }
+
+        .bitrateTicks {
+            display: flex;
+            justify-content: space-between;
+            font-size: .62rem;
+            color: var(--text-3);
+            font-weight: 600;
+            padding: 0 2px
+        }
+
+        .segmented {
+            display: flex;
+            gap: .25rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: .2rem
+        }
+
+        .segmented button {
+            flex: 1;
+            padding: .4rem .3rem;
+            border-radius: 6px;
+            font-size: .72rem;
+            font-weight: 600;
+            color: var(--text-3);
+            transition: all .15s var(--ease)
+        }
+
+        .segmented button:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, .04)
+        }
+
+        .segmented button.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: #fff;
+            box-shadow: 0 2px 8px var(--accent-glow)
+        }
+
+        .switch {
+            position: relative;
+            width: 36px;
+            height: 20px;
+            background: rgba(255, 255, 255, .1);
+            border-radius: 999px;
+            cursor: pointer;
+            transition: background .25s var(--ease);
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, .08)
+        }
+
+        .switch::after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #fff;
+            transition: transform .25s var(--bounce), background .25s var(--ease);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .3)
+        }
+
+        .switch.on {
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            border-color: transparent;
+            box-shadow: 0 0 12px var(--accent-glow)
+        }
+
+        .switch.on::after {
+            transform: translateX(16px)
         }
 
         #settingsBackdrop {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, .6);
+            background: rgba(0, 0, 0, .65);
             z-index: 1000;
             opacity: 0;
             pointer-events: none;
             transition: opacity .3s var(--ease);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px)
         }
 
         #settingsBackdrop.open {
@@ -1577,8 +2114,8 @@
             left: 50%;
             bottom: 0;
             transform: translate(-50%, 100%);
-            width: min(580px, calc(100% - 2rem));
-            max-height: 82vh;
+            width: min(680px, calc(100% - 2rem));
+            max-height: 88vh;
             z-index: 1001;
             background: var(--surface-solid);
             border: 1px solid var(--border-2);
@@ -1587,7 +2124,7 @@
             display: flex;
             flex-direction: column;
             transition: transform .4s var(--ease-out);
-            box-shadow: 0 -24px 80px rgba(0, 0, 0, .7);
+            box-shadow: 0 -24px 80px rgba(0, 0, 0, .7)
         }
 
         #settingsSheet.open {
@@ -1598,12 +2135,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 1.1rem 1.5rem;
-            border-bottom: 1px solid var(--border);
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid var(--border)
         }
 
         .sheetHead h2 {
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             font-weight: 700;
             letter-spacing: -.02em;
             display: flex;
@@ -1621,177 +2158,150 @@
         }
 
         .sheetBody {
-            padding: 1.2rem 1.5rem 1.8rem;
+            padding: 0;
             overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1.4rem;
-        }
-
-        .setGroup {
-            display: flex;
-            flex-direction: column;
-            gap: .35rem
-        }
-
-        .setGroup h3 {
-            font-size: .7rem;
-            font-weight: 700;
-            color: var(--text-3);
-            letter-spacing: .12em;
-            text-transform: uppercase;
-            padding: 0 .1rem .35rem;
-        }
-
-        .setRow {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: .9rem;
-            padding: .6rem .75rem;
-            border-radius: var(--r-sm);
-            transition: background .15s var(--ease);
-        }
-
-        .setRow:hover {
-            background: rgba(255, 255, 255, .03)
-        }
-
-        .setRow.col {
-            flex-direction: column;
-            align-items: stretch;
-            gap: .5rem
-        }
-
-        .setRow .setLabel {
-            font-size: .85rem;
-            font-weight: 500;
             flex: 1
         }
 
-        .setRow .setDesc {
-            font-size: .72rem;
+        .setSection {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .setSection:last-child {
+            border-bottom: none
+        }
+
+        .setSection h3 {
+            font-size: .68rem;
+            font-weight: 800;
             color: var(--text-3);
-            margin-top: .15rem
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            margin-bottom: .55rem
         }
 
-        .switch {
-            position: relative;
-            width: 42px;
-            height: 24px;
-            background: rgba(255, 255, 255, .1);
-            border-radius: 999px;
-            cursor: pointer;
-            flex-shrink: 0;
-            transition: background .25s var(--ease);
-            border: 1px solid rgba(255, 255, 255, .08);
+        .setSection h3 .ic {
+            width: 13px;
+            height: 13px;
+            stroke-width: 2.5;
+            color: var(--accent)
         }
 
-        .switch::after {
-            content: "";
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #fff;
-            transition: transform .25s var(--bounce), background .25s var(--ease);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
+        .setRow {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: .75rem;
+            padding: .55rem .1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, .03)
         }
 
-        .switch.on {
-            background: linear-gradient(135deg, var(--accent), var(--accent-2));
-            border-color: transparent;
-            box-shadow: 0 0 16px var(--accent-glow);
+        .setRow:last-child {
+            border-bottom: none
         }
 
-        .switch.on::after {
-            transform: translateX(18px)
+        .setRow .setLabel {
+            font-size: .84rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: .5rem
         }
 
-        .colorPicker {
-            width: 44px;
-            height: 32px;
+        .setRow .setLabel .ic {
+            width: 15px;
+            height: 15px;
+            stroke-width: 2;
+            color: var(--text-3)
+        }
+
+        .setRow select {
+            padding: .4rem .7rem;
+            font-size: .78rem;
+            min-width: 150px;
+            max-width: 220px;
+            padding-right: 1.9rem;
+            background-position: right .55rem center
+        }
+
+        .setRow input[type=color] {
+            width: 40px;
+            height: 28px;
             border-radius: 8px;
             cursor: pointer;
             border: 1px solid var(--border-2);
             background: transparent;
             padding: 0;
             overflow: hidden;
-            flex-shrink: 0;
+            flex-shrink: 0
         }
 
-        .colorPicker::-webkit-color-swatch-wrapper {
+        .setRow input[type=color]::-webkit-color-swatch-wrapper {
             padding: 0
         }
 
-        .colorPicker::-webkit-color-swatch {
+        .setRow input[type=color]::-webkit-color-swatch {
             border: none;
             border-radius: 7px
         }
 
-        .colorPicker::-moz-color-swatch {
+        .setRow input[type=color]::-moz-color-swatch {
             border: none;
             border-radius: 7px
         }
 
-        .sliderWrap {
+        .setSlider {
+            grid-column: 1/-1;
             display: flex;
             align-items: center;
             gap: .75rem;
-            flex: 1;
-            max-width: 300px
+            padding-top: .1rem
         }
 
-        .sliderWrap input[type=range] {
+        .setSlider input[type=range] {
             flex: 1;
+            -webkit-appearance: none;
             appearance: none;
-            height: 4px;
-            padding: 0;
+            height: 5px;
             background: var(--border);
-            border-radius: 2px;
+            border-radius: 3px;
+            padding: 0;
             border: none;
             box-shadow: none;
+            cursor: pointer
         }
 
-        .sliderWrap input[type=range]::-webkit-slider-thumb {
+        .setSlider input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent), var(--accent-2));
-            cursor: pointer;
-            box-shadow: 0 2px 8px var(--accent-glow);
-            border: 2px solid var(--bg);
-            transition: transform .15s var(--ease);
-        }
-
-        .sliderWrap input[type=range]::-webkit-slider-thumb:hover {
-            transform: scale(1.15)
-        }
-
-        .sliderWrap input[type=range]::-moz-range-thumb {
             width: 16px;
             height: 16px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--accent), var(--accent-2));
             cursor: pointer;
-            border: 2px solid var(--bg);
+            box-shadow: 0 2px 8px var(--accent-glow);
+            border: 2px solid var(--bg)
         }
 
-        .sliderVal {
-            font-size: .78rem;
-            font-weight: 600;
-            min-width: 3.2rem;
+        .setSlider input[type=range]::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            cursor: pointer;
+            border: 2px solid var(--bg)
+        }
+
+        .setSliderVal {
+            font-size: .75rem;
+            font-weight: 700;
+            min-width: 3rem;
             text-align: right;
             color: var(--accent);
-            font-variant-numeric: tabular-nums;
-        }
-
-        .deviceSelect {
-            font-size: .82rem;
-            padding: .55rem .75rem
+            font-variant-numeric: tabular-nums
         }
 
         #lightbox {
@@ -1807,7 +2317,7 @@
             pointer-events: none;
             transition: opacity .3s var(--ease);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px)
         }
 
         #lightbox.open {
@@ -1821,7 +2331,7 @@
             border-radius: var(--r);
             box-shadow: 0 40px 120px rgba(0, 0, 0, .8);
             transform: scale(.94);
-            transition: transform .35s var(--bounce);
+            transition: transform .35s var(--bounce)
         }
 
         #lightbox.open img {
@@ -1841,7 +2351,7 @@
             align-items: center;
             justify-content: center;
             border: 1px solid rgba(255, 255, 255, .15);
-            transition: all .18s var(--ease);
+            transition: all .18s var(--ease)
         }
 
         #lightboxClose:hover {
@@ -1849,6 +2359,7 @@
             transform: scale(1.08) rotate(90deg)
         }
 
+        /* ===== MOBILE ===== */
         @media (max-width:720px) {
             :root {
                 --panel-w: 100vw
@@ -1862,9 +2373,60 @@
                 grid-template-columns: 1fr
             }
 
+            .tile.spotlight {
+                height: auto;
+                aspect-ratio: 16/9
+            }
+
+            .card {
+                padding: 1.8rem 1.5rem
+            }
+
+            .setRow {
+                grid-template-columns: 1fr;
+                gap: .35rem
+            }
+
+            .setRow select {
+                width: 100%;
+                max-width: none;
+                min-width: 0
+            }
+
+            #bottomBar {
+                left: 0;
+                right: 0;
+                bottom: 0;
+                transform: none;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                border-bottom: none;
+                padding: .5rem .5rem calc(.5rem + var(--safe-b));
+                gap: .35rem;
+                overflow-x: auto;
+                overflow-y: visible;
+                justify-content: flex-start;
+                scrollbar-width: none;
+                -webkit-overflow-scrolling: touch;
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+                background: rgba(11, 14, 20, .94);
+                box-shadow: 0 -10px 40px rgba(0, 0, 0, .55);
+            }
+
+            #bottomBar::-webkit-scrollbar {
+                display: none
+            }
+
+            #bottomBar:hover {
+                transform: none
+            }
+
             .ctrl {
                 width: 42px;
-                height: 42px
+                height: 42px;
+                flex-shrink: 0
             }
 
             .ctrl .ic {
@@ -1872,19 +2434,73 @@
                 height: 18px
             }
 
-            #bottomBar {
-                gap: .35rem;
-                padding: .45rem;
-                bottom: .8rem
+            .ctrl-group .ctrl-main {
+                height: 42px;
+                min-width: 50px;
+                padding: 0 .45rem 0 .8rem
             }
 
-            .card {
-                padding: 1.8rem 1.5rem
+            .ctrl-group .ctrl-main .ic {
+                width: 18px;
+                height: 18px
             }
 
-            .tile.spotlight {
-                height: auto;
-                aspect-ratio: 16/9
+            .ctrl-group .ctrl-chevron {
+                height: 42px;
+                width: 22px
+            }
+
+            .ctrl-group .ctrl-chevron .ic {
+                width: 11px;
+                height: 11px
+            }
+
+            .ctrl-group {
+                flex-shrink: 0
+            }
+
+            #gridWrap {
+                padding-bottom: calc(5rem + var(--safe-b))
+            }
+
+            /* Popups become centered bottom sheets */
+            .popup {
+                left: 50% !important;
+                right: auto;
+                bottom: calc(4.5rem + var(--safe-b));
+                width: calc(100vw - 1rem);
+                max-width: calc(100vw - 1rem);
+                max-height: 62vh;
+                transform: translateX(-50%) translateY(20px) scale(1);
+                margin: 0;
+            }
+
+            .popup.open {
+                transform: translateX(-50%) translateY(0) scale(1)
+            }
+
+            #soundPad {
+                grid-template-columns: repeat(3, 1fr);
+                padding: .75rem;
+                gap: .5rem
+            }
+
+            .soundBtn .si {
+                width: 24px;
+                height: 24px
+            }
+
+            .soundBtn .si svg {
+                width: 13px;
+                height: 13px
+            }
+
+            .soundBtn .sn {
+                font-size: .62rem
+            }
+
+            .chatMedia {
+                max-height: 220px
             }
         }
     </style>
@@ -1892,7 +2508,6 @@
 
 <body>
 
-    <!-- SVG ICONS -->
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
         <defs>
             <symbol id="i-mic" viewBox="0 0 24 24">
@@ -1948,6 +2563,9 @@
             <symbol id="i-x" viewBox="0 0 24 24">
                 <path d="M18 6 6 18" />
                 <path d="m6 6 12 12" />
+            </symbol>
+            <symbol id="i-chevron-up" viewBox="0 0 24 24">
+                <polyline points="18 15 12 9 6 15" />
             </symbol>
             <symbol id="i-maximize" viewBox="0 0 24 24">
                 <path d="M8 3H5a2 2 0 0 0-2 2v3" />
@@ -2057,6 +2675,38 @@
                 <line x1="17" y1="8" x2="22" y2="13" />
                 <line x1="22" y1="8" x2="17" y2="13" />
             </symbol>
+            <symbol id="i-sliders" viewBox="0 0 24 24">
+                <line x1="4" y1="21" x2="4" y2="14" />
+                <line x1="4" y1="10" x2="4" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="12" />
+                <line x1="12" y1="8" x2="12" y2="3" />
+                <line x1="20" y1="21" x2="20" y2="16" />
+                <line x1="20" y1="12" x2="20" y2="3" />
+                <line x1="1" y1="14" x2="7" y2="14" />
+                <line x1="9" y1="8" x2="15" y2="8" />
+                <line x1="17" y1="16" x2="23" y2="16" />
+            </symbol>
+            <symbol id="i-palette" viewBox="0 0 24 24">
+                <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
+                <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
+                <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
+                <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
+                <path
+                    d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
+            </symbol>
+            <symbol id="i-wave-sound" viewBox="0 0 24 24">
+                <path d="M2 12h4l3-9 4 18 3-9h6" />
+            </symbol>
+            <symbol id="i-zap" viewBox="0 0 24 24">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+            </symbol>
+            <symbol id="i-signal" viewBox="0 0 24 24">
+                <path d="M2 20h.01" />
+                <path d="M7 20v-4" />
+                <path d="M12 20v-8" />
+                <path d="M17 20V8" />
+                <path d="M22 4v16" />
+            </symbol>
         </defs>
     </svg>
 
@@ -2065,7 +2715,7 @@
     <div id="join">
         <div class="card">
             <div class="brand">
-                <div class="logo"><svg class="ic ic-lg">
+                <div class="logo"><svg class="ic">
                         <use href="#i-bell" />
                     </svg></div>
                 <div>
@@ -2073,20 +2723,13 @@
                     <div class="sub">Voice · Video · Screen · Files</div>
                 </div>
             </div>
-            <div class="field">
-                <label for="nameInput">Your name</label>
-                <input id="nameInput" maxlength="32" placeholder="Alex" autocomplete="nickname">
-            </div>
-            <div class="field">
-                <label for="roomInput">Room code</label>
-                <input id="roomInput" maxlength="64" placeholder="standup-42" autocomplete="off">
-            </div>
-            <button id="joinBtn" class="btn primary">
-                <svg class="ic ic-sm">
+            <div class="field"><label for="nameInput">Your name</label><input id="nameInput" maxlength="32"
+                    placeholder="Alex" autocomplete="nickname"></div>
+            <div class="field"><label for="roomInput">Room code</label><input id="roomInput" maxlength="64"
+                    placeholder="standup-42" autocomplete="off"></div>
+            <button id="joinBtn" class="btn primary"><svg class="ic ic-sm">
                     <use href="#i-user" />
-                </svg>
-                Join room
-            </button>
+                </svg> Join room</button>
         </div>
     </div>
 
@@ -2110,7 +2753,7 @@
                     <button class="tab" data-tab="admin"><svg class="ic">
                             <use href="#i-shield" />
                         </svg> Admin</button>
-                    <button class="tabClose" id="closePanelBtn" title="Close"><svg class="ic ic-sm">
+                    <button class="tabClose" id="closePanelBtn"><svg class="ic ic-sm">
                             <use href="#i-x" />
                         </svg></button>
                 </div>
@@ -2119,7 +2762,7 @@
                     <div id="timeline"></div>
                     <form id="chatForm" autocomplete="off">
                         <input id="chatInput" placeholder="Message…" maxlength="500">
-                        <button type="submit" title="Send"><svg class="ic">
+                        <button type="submit"><svg class="ic">
                                 <use href="#i-send" />
                             </svg></button>
                     </form>
@@ -2145,25 +2788,34 @@
                 <div class="tabContent hidden" id="adminTab">
                     <div class="adminWrap">
                         <div id="adminLogin">
-                            <div class="hint">
-                                <svg class="ic ic-sm">
+                            <div class="hint"><svg class="ic ic-sm">
                                     <use href="#i-unlock" />
-                                </svg>
-                                Enter the password printed in the server console to unlock mute/kick powers.
-                            </div>
+                                </svg> Enter the password printed in the server console to unlock admin powers.</div>
                             <input id="adminPwd" type="password" placeholder="Admin password" maxlength="16"
                                 autocomplete="off">
-                            <button id="adminLoginBtn" class="btn primary">
-                                <svg class="ic ic-sm">
+                            <button id="adminLoginBtn" class="btn primary"><svg class="ic ic-sm">
                                     <use href="#i-unlock" />
-                                </svg>
-                                Unlock admin
-                            </button>
+                                </svg> Unlock admin</button>
                         </div>
                         <div id="adminPanel" class="hidden">
-                            <div style="font-size:.8rem;color:var(--text-3);text-align:center">
-                                You have admin. Mute or kick anyone below.
+                            <div class="adminControls">
+                                <div class="adminToggle">
+                                    <div>
+                                        Bypass rate limit
+                                        <span class="desc">Spam mode — no 1/s or 10/min cap</span>
+                                    </div>
+                                    <div class="switch" id="adminBypass"></div>
+                                </div>
+                                <label class="adminUploadBtn">
+                                    <svg class="ic ic-sm">
+                                        <use href="#i-upload" />
+                                    </svg>
+                                    <span>Upload sound</span>
+                                    <input type="file" id="soundUpload" accept="audio/*" hidden>
+                                </label>
+                                <div class="adminUploadHint">mp3 · ogg · wav · m4a · webm · opus · flac — max 5 MB</div>
                             </div>
+                            <div class="adminPeersTitle">Participants</div>
                             <div class="adminPeers" id="adminPeers"></div>
                         </div>
                     </div>
@@ -2171,22 +2823,38 @@
             </aside>
 
             <div id="bottomBar">
-                <button class="ctrl" id="micBtn" title="Microphone">
-                    <svg class="ic ic-on">
-                        <use href="#i-mic" />
-                    </svg>
-                    <svg class="ic ic-off">
-                        <use href="#i-mic-off" />
-                    </svg>
-                </button>
-                <button class="ctrl" id="camBtn" title="Camera">
-                    <svg class="ic ic-on">
-                        <use href="#i-cam" />
-                    </svg>
-                    <svg class="ic ic-off">
-                        <use href="#i-cam-off" />
-                    </svg>
-                </button>
+                <div class="ctrl-group" id="micGroup">
+                    <button class="ctrl-main" id="micBtn" title="Toggle microphone">
+                        <svg class="ic ic-on">
+                            <use href="#i-mic" />
+                        </svg>
+                        <svg class="ic ic-off">
+                            <use href="#i-mic-off" />
+                        </svg>
+                    </button>
+                    <button class="ctrl-chevron" id="micChevron" title="Mic settings">
+                        <svg class="ic">
+                            <use href="#i-chevron-up" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="ctrl-group" id="camGroup">
+                    <button class="ctrl-main" id="camBtn" title="Toggle camera">
+                        <svg class="ic ic-on">
+                            <use href="#i-cam" />
+                        </svg>
+                        <svg class="ic ic-off">
+                            <use href="#i-cam-off" />
+                        </svg>
+                    </button>
+                    <button class="ctrl-chevron" id="camChevron" title="Camera settings">
+                        <svg class="ic">
+                            <use href="#i-chevron-up" />
+                        </svg>
+                    </button>
+                </div>
+
                 <button class="ctrl" id="screenBtn" title="Share screen"><svg class="ic">
                         <use href="#i-screen" />
                     </svg></button>
@@ -2209,6 +2877,102 @@
         </main>
     </div>
 
+    <!-- Popups live outside #bottomBar so position:fixed works on mobile -->
+    <div class="popup" id="micPopup">
+        <div class="popupHead">
+            <h4><svg class="ic">
+                    <use href="#i-mic" />
+                </svg> Microphone</h4>
+            <button class="popupClose" data-close="micPopup"><svg class="ic ic-sm">
+                    <use href="#i-x" />
+                </svg></button>
+        </div>
+
+        <div class="popupField">
+            <label for="micSelect">Input device</label>
+            <select id="micSelect"></select>
+        </div>
+
+        <div class="popupField">
+            <label>Audio quality</label>
+            <div class="bitrateWrap">
+                <div class="bitrateHeader">
+                    <div class="bitrateValue"><span id="micBitrateVal">32</span><span class="unit">kbps</span></div>
+                    <div class="bitrateBadge">
+                        <svg class="ic ic-xs">
+                            <use href="#i-signal" />
+                        </svg>
+                        <span id="micBitrateLabel">HD Voice</span>
+                    </div>
+                </div>
+                <input type="range" class="bitrateSlider" id="micBitrate" min="6" max="128" step="2" value="32">
+                <div class="bitrateTicks"><span>6</span><span>32</span><span>64</span><span>128</span></div>
+            </div>
+        </div>
+
+        <div class="popupRow">
+            <div class="popupRowLabel">Noise suppression<span class="desc">Filter background hum</span></div>
+            <div class="switch" data-set="ns"></div>
+        </div>
+        <div class="popupRow">
+            <div class="popupRowLabel">Echo cancellation<span class="desc">Prevent feedback</span></div>
+            <div class="switch" data-set="ec"></div>
+        </div>
+        <div class="popupRow">
+            <div class="popupRowLabel">Forward error correction<span class="desc">Recover lost packets</span></div>
+            <div class="switch" data-set="fec"></div>
+        </div>
+        <div class="popupRow">
+            <div class="popupRowLabel">Silence suppression<span class="desc">Cut audio during pauses</span></div>
+            <div class="switch" data-set="dtx"></div>
+        </div>
+        <div class="popupRow">
+            <div class="popupRowLabel">Push-to-talk<span class="desc">Hold <b>Space</b></span></div>
+            <div class="switch" data-set="ptt"></div>
+        </div>
+    </div>
+
+    <div class="popup" id="camPopup">
+        <div class="popupHead">
+            <h4><svg class="ic">
+                    <use href="#i-cam" />
+                </svg> Camera</h4>
+            <button class="popupClose" data-close="camPopup"><svg class="ic ic-sm">
+                    <use href="#i-x" />
+                </svg></button>
+        </div>
+
+        <div class="popupField">
+            <label for="camSelect">Device</label>
+            <select id="camSelect"></select>
+        </div>
+
+        <div class="popupField">
+            <label>Resolution</label>
+            <div class="segmented" data-seg="camRes">
+                <button data-val="320">320p</button>
+                <button data-val="480">480p</button>
+                <button data-val="720" class="active">720p</button>
+                <button data-val="1080">1080p</button>
+            </div>
+        </div>
+
+        <div class="popupField">
+            <label>Framerate</label>
+            <div class="segmented" data-seg="camFps">
+                <button data-val="15">15</button>
+                <button data-val="24">24</button>
+                <button data-val="30" class="active">30</button>
+                <button data-val="60">60</button>
+            </div>
+        </div>
+
+        <div class="popupRow">
+            <div class="popupRowLabel">Mirror my camera<span class="desc">Flip horizontally</span></div>
+            <div class="switch on" data-set="mirror"></div>
+        </div>
+    </div>
+
     <div id="settingsBackdrop"></div>
     <div id="settingsSheet">
         <div class="sheetHead">
@@ -2220,100 +2984,75 @@
                 </svg></button>
         </div>
         <div class="sheetBody">
-            <div class="setGroup">
-                <h3>Devices</h3>
-                <div class="setRow col"><span class="setLabel">Microphone</span><select id="micSelect"
-                        class="deviceSelect"></select></div>
-                <div class="setRow col"><span class="setLabel">Camera</span><select id="camSelect"
-                        class="deviceSelect"></select></div>
+            <section class="setSection">
+                <h3><svg class="ic">
+                        <use href="#i-wave-sound" />
+                    </svg> Audio</h3>
                 <div class="setRow">
-                    <div>
-                        <div class="setLabel">Enable mic on join</div>
-                        <div class="setDesc">Automatically turn on microphone</div>
-                    </div>
+                    <div class="setLabel"><svg class="ic">
+                            <use href="#i-mic" />
+                        </svg><span>Enable mic on join</span></div>
                     <div class="switch on" data-set="micOnJoin"></div>
                 </div>
-            </div>
-            <div class="setGroup">
-                <h3>Audio processing</h3>
                 <div class="setRow">
-                    <div class="setLabel">Noise suppression</div>
-                    <div class="switch on" data-set="ns"></div>
+                    <div class="setLabel"><svg class="ic">
+                            <use href="#i-signal" />
+                        </svg><span>Mic bitrate</span></div><span class="setSliderVal" id="micBitrateVal2">32k</span>
                 </div>
                 <div class="setRow">
-                    <div class="setLabel">Echo cancellation</div>
-                    <div class="switch on" data-set="ec"></div>
+                    <div class="setSlider"><input type="range" id="micBitrate2" min="6" max="128" step="2" value="32">
+                    </div>
                 </div>
-            </div>
-            <div class="setGroup">
-                <h3>Video quality</h3>
+            </section>
+
+            <section class="setSection">
+                <h3><svg class="ic">
+                        <use href="#i-cam" />
+                    </svg> Video</h3>
                 <div class="setRow">
-                    <div class="setLabel">Camera bitrate</div>
-                    <div class="sliderWrap"><input type="range" id="camBitrate" min="200" max="6000" step="100"
-                            value="1500"><span class="sliderVal" id="camBitrateVal">1.5M</span></div>
-                </div>
-                <div class="setRow">
-                    <div class="setLabel">Camera resolution</div>
-                    <select id="camRes" style="width:auto;min-width:120px">
-                        <option value="320">320p</option>
-                        <option value="480">480p</option>
-                        <option value="720" selected>720p</option>
-                        <option value="1080">1080p</option>
+                    <div class="setLabel"><svg class="ic">
+                            <use href="#i-sliders" />
+                        </svg><span>Screen share preset</span></div>
+                    <select id="screenQuality">
+                        <option value="fast" selected>⚡ Fast · 720p30</option>
+                        <option value="quality">✨ Quality · 1080p60</option>
                     </select>
                 </div>
                 <div class="setRow">
-                    <div class="setLabel">Camera FPS</div>
-                    <select id="camFps" style="width:auto;min-width:120px">
-                        <option value="15">15</option>
-                        <option value="24">24</option>
-                        <option value="30" selected>30</option>
-                        <option value="60">60</option>
-                    </select>
+                    <div class="setLabel"><svg class="ic">
+                            <use href="#i-screen" />
+                        </svg><span>Show my own tile</span></div>
+                    <div class="switch on" data-set="selfTile"></div>
+                </div>
+            </section>
+
+            <section class="setSection">
+                <h3><svg class="ic">
+                        <use href="#i-palette" />
+                    </svg> Appearance</h3>
+                <div class="setRow">
+                    <div class="setLabel"><svg class="ic">
+                            <use href="#i-palette" />
+                        </svg><span>Primary color</span></div><input type="color" id="colorAccent" value="#7c5cff">
                 </div>
                 <div class="setRow">
-                    <div class="setLabel">Screen preset</div>
-                    <select id="screenQuality" style="width:auto;min-width:170px">
-                        <option value="perf" selected>⚡ Performance</option>
-                        <option value="high">✨ High quality</option>
-                    </select>
+                    <div class="setLabel"><svg class="ic">
+                            <use href="#i-palette" />
+                        </svg><span>Secondary color</span></div><input type="color" id="colorAccent2" value="#ec4899">
                 </div>
                 <div class="setRow">
-                    <div class="setLabel">Screen bitrate</div>
-                    <div class="sliderWrap"><input type="range" id="screenBitrate" min="500" max="12000" step="200"
-                            value="1200"><span class="sliderVal" id="screenBitrateVal">1.2M</span></div>
-                </div>
-            </div>
-            <div class="setGroup">
-                <h3>Appearance</h3>
-                <div class="setRow">
-                    <div class="setLabel">Primary color</div><input type="color" id="colorAccent" class="colorPicker"
-                        value="#7c5cff">
-                </div>
-                <div class="setRow">
-                    <div class="setLabel">Secondary color</div><input type="color" id="colorAccent2" class="colorPicker"
-                        value="#ec4899">
-                </div>
-                <div class="setRow">
-                    <div class="setLabel">Animations</div>
+                    <div class="setLabel"><svg class="ic">
+                            <use href="#i-zap" />
+                        </svg><span>Animations</span></div>
                     <div class="switch on" data-set="animations"></div>
                 </div>
                 <div class="setRow">
-                    <div class="setLabel">Voice visualizer</div>
+                    <div class="setLabel"><svg class="ic">
+                            <use href="#i-signal" />
+                        </svg><span>Voice visualizer</span></div>
                     <div class="switch on" data-set="viz"></div>
                 </div>
-                <div class="setRow">
-                    <div class="setLabel">Mirror own camera</div>
-                    <div class="switch on" data-set="mirror"></div>
-                </div>
-                <div class="setRow">
-                    <div class="setLabel">Show my own tile</div>
-                    <div class="switch on" data-set="selfTile"></div>
-                </div>
-                <div class="setRow">
-                    <div class="setLabel">Push-to-talk (Space)</div>
-                    <div class="switch" data-set="ptt"></div>
-                </div>
-            </div>
+            </section>
         </div>
     </div>
 
@@ -2327,18 +3066,14 @@
     <script>
         "use strict";
 
-        /* ============================================================
-           Utilities
-           ============================================================ */
         const $ = (s) => document.querySelector(s);
         const $$ = (s) => document.querySelectorAll(s);
         const icon = (name, cls = "ic") => `<svg class="${cls}"><use href="#i-${name}"/></svg>`;
         const fmtBytes = (n) => {
-            if (!n) return "0 B"; const u = ["B", "KB", "MB", "GB"]; let i = 0;
+            if (!n) return "0 B"; const u = ["B", "KB", "MB", "GB", "TB"]; let i = 0;
             while (n >= 1024 && i < u.length - 1) { n /= 1024; i++; }
             return n.toFixed(i === 0 ? 0 : 1) + " " + u[i];
         };
-        const fmtBitrate = (kbps) => kbps >= 1000 ? (kbps / 1000).toFixed(1) + "M" : kbps + "K";
         const fmtTime = (ms) => new Date(ms).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
         const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
         const initials = (name) => {
@@ -2346,9 +3081,6 @@
             return ((p[0]?.[0] || "?") + (p[1]?.[0] || "")).toUpperCase();
         };
 
-        /* ============================================================
-           State
-           ============================================================ */
         const ICE_SERVERS = {
             iceServers: [
                 { urls: "stun:stun.l.google.com:19302" },
@@ -2360,70 +3092,78 @@
         let localStream = null, camStream = null, screenStream = null;
         let micOn = false, camOn = false, sharing = false, manuallyLeft = false;
         let audioCtx = null, vizRAF = 0, lastVizTime = 0, isAdmin = false;
+        let adminPassword = "", adminBypassRate = false;
+        let customSounds = [];
 
         const settings = {
             animations: true, viz: true, mirror: true, selfTile: true,
-            ns: true, ec: true, ptt: false, micOnJoin: true
+            ns: false, ec: false, ptt: false, micOnJoin: true, fec: false, dtx: false
         };
-        const mediaSettings = {
-            camBitrateKbps: 1500, camRes: 720, camFps: 30,
-            screenQuality: "perf", screenBitrateKbps: 1200
-        };
-        const theme = { accent: "#7c5cff", accent2: "#ec4899" };
 
+        const audioSettings = { bitrateKbps: 32 };
+
+        const AUDIO_QUALITY_LEVELS = [
+            { min: 0, max: 10, label: "Narrowband" },
+            { min: 10, max: 20, label: "Wideband" },
+            { min: 20, max: 32, label: "HD Voice" },
+            { min: 32, max: 48, label: "High" },
+            { min: 48, max: 72, label: "Very High" },
+            { min: 72, max: 200, label: "Maximum" },
+        ];
+        function audioQualityLabel(kbps) {
+            for (const l of AUDIO_QUALITY_LEVELS) if (kbps >= l.min && kbps < l.max) return l.label;
+            return "Maximum";
+        }
+
+        const mediaSettings = { camRes: 720, camFps: 30, preset: "fast" };
+        const PRESETS = {
+            fast: { camBitrateKbps: 1200, screenBitrateKbps: 1500, screenRes: 720, screenFps: 30 },
+            quality: { camBitrateKbps: 4000, screenBitrateKbps: 8000, screenRes: 1080, screenFps: 60 },
+        };
+        function preset() { return PRESETS[mediaSettings.preset]; }
+
+        const theme = { accent: "#7c5cff", accent2: "#ec4899" };
         const peers = new Map();
         const files = new Map();
         const analysers = new Map();
         const soundBudget = { times: [] };
+        const customAudioCache = new Map();
 
-        /* ============================================================
-           Placeholder media tracks
-           ------------------------------------------------------------
-           Every sender always has a track attached — even before the
-           user enables a camera/mic — so the initial SDP carries an
-           msid and the remote's `ontrack` fires. Swapping between the
-           placeholder and real media uses `replaceTrack()`, which does
-           NOT require SDP renegotiation.
-           ============================================================ */
-
-        let _blankCanvas = null;
-        let _blankVideoTrack = null;
+        /* ---- Placeholder tracks ---- */
+        let _blankVideo = null;
         function getBlankVideoTrack() {
-            if (_blankVideoTrack && _blankVideoTrack.readyState === "live") return _blankVideoTrack;
-            _blankCanvas = document.createElement("canvas");
-            _blankCanvas.width = 16;
-            _blankCanvas.height = 16;
-            const ctx = _blankCanvas.getContext("2d");
-            ctx.fillStyle = "#000";
-            ctx.fillRect(0, 0, 16, 16);
-            const stream = _blankCanvas.captureStream(5);
-            _blankVideoTrack = stream.getVideoTracks()[0];
-            _blankVideoTrack.contentHint = "motion";
-            return _blankVideoTrack;
+            if (_blankVideo && _blankVideo.readyState === "live") return _blankVideo;
+            const c = document.createElement("canvas");
+            c.width = 320; c.height = 180;
+            const ctx = c.getContext("2d");
+            let hue = 0;
+            setInterval(() => {
+                ctx.fillStyle = "#0a0d16"; ctx.fillRect(0, 0, 320, 180);
+                hue = (hue + 2) % 360;
+                ctx.fillStyle = `hsl(${hue}, 40%, 12%)`;
+                ctx.beginPath(); ctx.arc(160, 90, 40, 0, Math.PI * 2); ctx.fill();
+            }, 100);
+            const s = c.captureStream(10);
+            _blankVideo = s.getVideoTracks()[0];
+            _blankVideo.contentHint = "motion";
+            return _blankVideo;
         }
-
-        let _silentCtx = null;
-        let _silentAudioTrack = null;
+        let _silentTrack = null;
         function getSilentAudioTrack() {
-            if (_silentAudioTrack && _silentAudioTrack.readyState === "live") return _silentAudioTrack;
-            _silentCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = _silentCtx.createOscillator();
-            const gain = _silentCtx.createGain();
-            gain.gain.value = 0;
-            const dest = _silentCtx.createMediaStreamDestination();
-            osc.connect(gain);
-            gain.connect(dest);
-            osc.start();
-            _silentAudioTrack = dest.stream.getAudioTracks()[0];
-            return _silentAudioTrack;
+            if (_silentTrack && _silentTrack.readyState === "live") return _silentTrack;
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain(); gain.gain.value = 0;
+            const dest = ctx.createMediaStreamDestination();
+            osc.connect(gain); gain.connect(dest); osc.start();
+            _silentTrack = dest.stream.getAudioTracks()[0];
+            return _silentTrack;
         }
-
         function currentAudioTrack() {
             const t = localStream?.getAudioTracks?.()[0];
-            if (t && t.readyState === "live") return t;
+            if (t && t.readyState === "live" && micOn) return t;
             return getSilentAudioTrack();
         }
-
         function currentVideoTrack() {
             if (sharing && screenStream) {
                 const t = screenStream.getVideoTracks()[0];
@@ -2436,9 +3176,46 @@
             return getBlankVideoTrack();
         }
 
-        /* ============================================================
-           Audio context + sound pad
-           ============================================================ */
+        /* ---- Opus SDP ---- */
+        function tuneOpusSdp(sdp) {
+            const m = sdp.match(/a=rtpmap:(\d+) opus\/48000/i);
+            if (!m) return sdp;
+            const pt = m[1];
+            const fmtpRe = new RegExp(`a=fmtp:${pt} ([^\\r\\n]*)`);
+            const adds = [
+                `maxaveragebitrate=${audioSettings.bitrateKbps * 1000}`,
+                `useinbandfec=${settings.fec ? 1 : 0}`,
+                `usedtx=${settings.dtx ? 1 : 0}`,
+                `stereo=0`, `sprop-stereo=0`, `ptime=20`,
+            ];
+            const fm = sdp.match(fmtpRe);
+            if (fm) {
+                let p = fm[1];
+                for (const a of adds) {
+                    const k = a.split("=")[0];
+                    const re = new RegExp(`\\b${k}=\\d+`);
+                    p = re.test(p) ? p.replace(re, a) : (p ? p + ";" + a : a);
+                }
+                return sdp.replace(fmtpRe, `a=fmtp:${pt} ${p}`);
+            }
+            return sdp.replace(new RegExp(`(a=rtpmap:${pt} opus\\/48000[^\\r\\n]*\\r?\\n)`),
+                `$1a=fmtp:${pt} ${adds.join(";")}\r\n`);
+        }
+        function applyAudioParams(st) {
+            if (!st.audioSender) return;
+            try {
+                const p = st.audioSender.getParameters();
+                if (!p.encodings || !p.encodings.length) p.encodings = [{}];
+                const enc = p.encodings[0];
+                enc.maxBitrate = audioSettings.bitrateKbps * 1000;
+                enc.dtx = settings.dtx;
+                enc.priority = "high";
+                enc.networkPriority = "high";
+                st.audioSender.setParameters(p).catch(() => { });
+            } catch { }
+        }
+
+        /* ---- Audio + sounds ---- */
         function initAudio() {
             if (audioCtx) return;
             const AC = window.AudioContext || window.webkitAudioContext;
@@ -2463,6 +3240,12 @@
             come: { name: "Come chat", icon: "msg-dots", play: (t) => { tone(659, t, 0.28, "triangle", 0.18); tone(523, t + 0.25, 0.5, "triangle", 0.18); } },
             hello: { name: "Hello", icon: "wave", play: (t) => { tone(784, t, 0.11); tone(988, t + 0.09, 0.11); tone(1175, t + 0.18, 0.22); } },
             wait: { name: "Wait", icon: "clock", play: (t) => { tone(392, t, 0.24, "sine", 0.16); tone(330, t + 0.22, 0.4, "sine", 0.16); } },
+            stop: { name: "Stop", icon: "hand", play: (t) => { tone(440, t, 0.15, "square", 0.18); tone(330, t + 0.13, 0.4, "square", 0.18); } },
+            clap: { name: "Clap", icon: "hand", play: (t) => { for (let i = 0; i < 3; i++) tone(1400, t + i * 0.06, 0.045, "square", 0.13); } },
+            success: { name: "Success", icon: "check", play: (t) => { [523, 659, 784, 1047].forEach((f, i) => tone(f, t + i * 0.07, 0.2)); } },
+            error: { name: "Error", icon: "x", play: (t) => { tone(220, t, 0.2, "square", 0.14); tone(165, t + 0.18, 0.35, "square", 0.14); } },
+            ping: { name: "Ping", icon: "bell", play: (t) => { tone(1568, t, 0.08); tone(1568, t + 0.12, 0.25); } },
+            alert: { name: "Alert", icon: "bell", play: (t) => { [880, 660, 880, 660].forEach((f, i) => tone(f, t + i * 0.12, 0.1, "triangle", 0.16)); } },
         };
         function playSound(id) {
             initAudio();
@@ -2470,10 +3253,20 @@
             if (!def || !audioCtx) return;
             audioCtx.resume().then(() => def.play(audioCtx.currentTime + 0.02)).catch(() => { });
         }
+        function playCustomSound(id) {
+            const s = customSounds.find((x) => x.id === id);
+            if (!s) return;
+            let a = customAudioCache.get(s.url);
+            if (!a) { a = new Audio(s.url); a.preload = "auto"; customAudioCache.set(s.url, a); }
+            try { a.currentTime = 0; a.play().catch(() => { }); } catch { }
+        }
+        function playAnySound(id) {
+            if (id.startsWith("file:")) playCustomSound(id); else playSound(id);
+        }
         function soundAllowed() {
             const now = Date.now();
             soundBudget.times = soundBudget.times.filter((t) => now - t < 60000);
-            if (soundBudget.times.length >= 10) return { ok: false, reason: "10/min limit reached" };
+            if (soundBudget.times.length >= 10) return { ok: false, reason: "10/min limit" };
             if (soundBudget.times.length && now - soundBudget.times[soundBudget.times.length - 1] < 1000)
                 return { ok: false, reason: "Wait 1 second" };
             soundBudget.times.push(now);
@@ -2485,18 +3278,63 @@
             const used = soundBudget.times.length;
             const last = soundBudget.times[soundBudget.times.length - 1] || 0;
             const gap = last ? Math.max(0, 1000 - (now - last)) : 0;
-            const el = $("#soundRate");
-            if (!el) return;
-            el.innerHTML = gap > 0
-                ? `<b>Wait ${(gap / 1000).toFixed(1)}s</b> · ${used}/10 in last minute`
+            const el = $("#soundRate"); if (!el) return;
+            if (adminBypassRate) { el.innerHTML = `<b>Bypass active</b> · unlimited sounds`; return; }
+            el.innerHTML = gap > 0 ? `<b>Wait ${(gap / 1000).toFixed(1)}s</b> · ${used}/10 in last minute`
                 : `Ready · <b>${used}/10</b> in last minute`;
         }
+        async function refreshCustomSounds() {
+            try {
+                const r = await fetch("/sounds");
+                const d = await r.json();
+                customSounds = d.custom || [];
+                buildSoundPad();
+            } catch (e) { console.warn("sounds:", e); }
+        }
 
-        /* ============================================================
-           Signaling
-           ============================================================ */
+        /* ---- Popups ---- */
+        function closeAllPopups() { $$(".popup.open").forEach((p) => p.classList.remove("open")); }
+        function positionPopup(popup, trigger) {
+            const t = trigger.getBoundingClientRect();
+            const pw = popup.offsetWidth || 320;
+            let left = t.left + t.width / 2;
+            // Clamp within viewport with 8px margin
+            left = Math.max(pw / 2 + 8, Math.min(left, window.innerWidth - pw / 2 - 8));
+            popup.style.left = `${left}px`;
+            popup.style.bottom = `${window.innerHeight - t.top + 12}px`;
+        }
+        function openPopup(id, trigger) {
+            const p = document.getElementById(id); if (!p) return;
+            const isOpen = p.classList.contains("open");
+            closeAllPopups();
+            if (isOpen) return;
+            p.classList.add("open");
+            if (window.innerWidth > 720) positionPopup(p, trigger);
+            else { p.style.left = ""; p.style.bottom = ""; }
+        }
+        function togglePopup(id, trigger) { openPopup(id, trigger); }
+        $$(".popupClose").forEach((b) => b.onclick = (e) => {
+            e.stopPropagation();
+            document.getElementById(b.dataset.close)?.classList.remove("open");
+        });
+        document.addEventListener("click", (e) => {
+            if (!e.target.closest(".ctrl-group") && !e.target.closest(".popup") && !e.target.closest("#settingsSheet")) {
+                closeAllPopups();
+            }
+        });
+        window.addEventListener("resize", () => {
+            if (window.innerWidth <= 720) {
+                for (const p of $$(".popup.open")) { p.style.left = ""; p.style.bottom = ""; }
+            } else {
+                const micP = $("#micPopup");
+                if (micP?.classList.contains("open")) positionPopup(micP, $("#micChevron"));
+                const camP = $("#camPopup");
+                if (camP?.classList.contains("open")) positionPopup(camP, $("#camChevron"));
+            }
+        });
+
+        /* ---- Signaling ---- */
         function send(obj) { if (ws && ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify(obj)); }
-
         function connectSignaling() {
             const proto = location.protocol === "https:" ? "wss:" : "ws:";
             ws = new WebSocket(`${proto}//${location.host}/ws/${encodeURIComponent(roomId)}`);
@@ -2511,7 +3349,6 @@
                 setTimeout(() => { if (!manuallyLeft) connectSignaling(); }, 1500);
             };
         }
-
         async function handleSignal(m) {
             switch (m.t) {
                 case "welcome": {
@@ -2520,15 +3357,13 @@
                     tlSys(`You joined as ${myName}.`);
                     break;
                 }
-                case "peer-joined": {
-                    await createPeer(m.peer.id, m.peer.name, m.peer, false);
-                    tlSys(`${m.peer.name} joined.`);
-                    break;
-                }
+                case "peer-joined": await createPeer(m.peer.id, m.peer.name, m.peer, false);
+                    tlSys(`${m.peer.name} joined.`); break;
                 case "peer-left": removePeer(m.id, true); break;
                 case "offer": {
                     let st = peers.get(m.from);
                     if (!st) st = await createPeer(m.from, "Peer", {}, false);
+                    if (st.pc.signalingState !== "stable") try { await st.pc.setLocalDescription({ type: "rollback" }); } catch { }
                     await st.pc.setRemoteDescription(m.sdp);
                     const ans = await st.pc.createAnswer();
                     await st.pc.setLocalDescription(ans);
@@ -2537,19 +3372,16 @@
                 }
                 case "answer": {
                     const st = peers.get(m.from);
-                    if (st && st.pc.signalingState === "have-local-offer") {
-                        await st.pc.setRemoteDescription(m.sdp);
-                    }
+                    if (st && st.pc.signalingState === "have-local-offer") await st.pc.setRemoteDescription(m.sdp);
                     break;
                 }
                 case "ice": {
                     const st = peers.get(m.from);
-                    if (st && m.c) { try { await st.pc.addIceCandidate(m.c); } catch { } }
+                    if (st && m.c) try { await st.pc.addIceCandidate(m.c); } catch { }
                     break;
                 }
                 case "peer-state": {
-                    const st = peers.get(m.id);
-                    if (!st) break;
+                    const st = peers.get(m.id); if (!st) break;
                     st.muted = !!m.muted; st.video = !!m.video; st.screen = !!m.screen;
                     if (m.mutedByAdmin !== undefined) st.mutedByAdmin = !!m.mutedByAdmin;
                     if (m.isAdmin !== undefined) st.isAdmin = !!m.isAdmin;
@@ -2559,7 +3391,7 @@
                 case "chat": tlChat(m.name, m.text, m.from === myId, m.at); break;
                 case "sound": {
                     tlSound(m.name, m.sound, m.from === myId);
-                    if (m.from !== myId) playSound(m.sound);
+                    if (m.from !== myId) playAnySound(m.sound);
                     break;
                 }
                 case "sound-ratelimit": tlSys("Sound rate limit hit — slow down."); break;
@@ -2577,239 +3409,165 @@
             }
         }
 
-        /* ============================================================
-           WebRTC
-           ============================================================ */
+        /* ---- WebRTC ---- */
         async function preferH264(pc) {
             try {
-                const caps = RTCRtpSender.getCapabilities("video");
-                if (!caps) return;
+                const caps = RTCRtpSender.getCapabilities("video"); if (!caps) return;
                 const pref = ["video/H264", "video/VP9"];
                 const sorted = [...caps.codecs].sort((a, b) => {
                     const ai = pref.indexOf(a.mimeType), bi = pref.indexOf(b.mimeType);
                     if (ai === -1 && bi === -1) return 0;
-                    if (ai === -1) return 1;
-                    if (bi === -1) return -1;
-                    return ai - bi;
+                    if (ai === -1) return 1; if (bi === -1) return -1; return ai - bi;
                 });
-                for (const t of pc.getTransceivers()) {
-                    try { t.setCodecPreferences(sorted); } catch { }
-                }
+                for (const t of pc.getTransceivers()) try { t.setCodecPreferences(sorted); } catch { }
             } catch { }
         }
-
         async function createPeer(id, name, meta, initiate) {
             let st = peers.get(id);
-            if (st) {
-                if (name && name !== "Peer") { st.name = name; renderTileContent(st); }
-                return st;
-            }
+            if (st) { if (name && name !== "Peer") { st.name = name; renderTileContent(st); } return st; }
 
             const pc = new RTCPeerConnection(ICE_SERVERS);
             await preferH264(pc);
-
             st = {
-                id, name: name || "Peer", pc,
-                stream: new MediaStream(), tile: null,
+                id, name: name || "Peer", pc, stream: new MediaStream(), tile: null,
                 muted: !!meta.muted, video: !!meta.video, screen: !!meta.screen,
                 isAdmin: !!meta.isAdmin, mutedByAdmin: !!meta.mutedByAdmin,
-                audioSender: null, videoSender: null,
+                audioSender: null, videoSender: null
             };
             peers.set(id, st);
 
-            const audioTx = pc.addTransceiver("audio", { direction: "sendrecv" });
-            const videoTx = pc.addTransceiver("video", { direction: "sendrecv" });
-            st.audioSender = audioTx.sender;
-            st.videoSender = videoTx.sender;
-
-            // Attach placeholder tracks NOW so the first SDP contains msids
-            // for both m-lines. This is the key fix — without it the remote
-            // never fires `ontrack` for video, and video never appears.
-            try { await st.audioSender.replaceTrack(currentAudioTrack()); } catch (e) { console.warn("audio:", e); }
-            try { await st.videoSender.replaceTrack(currentVideoTrack()); } catch (e) { console.warn("video:", e); }
-            applyVideoParams(st);
+            const ia = currentAudioTrack(), iv = currentVideoTrack();
+            try { st.audioSender = pc.addTrack(ia, new MediaStream([ia])); } catch (e) { console.error(e); }
+            try { st.videoSender = pc.addTrack(iv, new MediaStream([iv])); } catch (e) { console.error(e); }
+            applyVideoParams(st); applyAudioParams(st);
 
             pc.ontrack = (ev) => {
                 const t = ev.track;
-                for (const old of st.stream.getTracks()) {
-                    if (old.kind === t.kind) st.stream.removeTrack(old);
-                }
+                for (const o of st.stream.getTracks()) if (o.kind === t.kind) st.stream.removeTrack(o);
                 st.stream.addTrack(t);
                 if (t.kind === "audio") attachAnalyser(id, st.stream);
                 renderTileContent(st);
             };
-
             pc.onicecandidate = (ev) => { if (ev.candidate) send({ t: "ice", to: id, c: ev.candidate }); };
             pc.onconnectionstatechange = () => {
                 if (pc.connectionState === "failed" || pc.connectionState === "closed") removePeer(id, true);
             };
 
-            updateTile(st);
-            refreshGrid(); updatePeerCount();
-
+            updateTile(st); refreshGrid(); updatePeerCount();
             if (initiate) {
                 try {
                     const offer = await pc.createOffer();
+                    offer.sdp = tuneOpusSdp(offer.sdp);
                     await pc.setLocalDescription(offer);
                     send({ t: "offer", to: id, sdp: pc.localDescription });
                 } catch (e) { console.error("offer:", e); }
             }
             return st;
         }
-
-        /* Swap the video track on every peer. NEVER pass null — always a
-           real, live track (camera → screen → blank fallback). No renegotiation. */
         async function syncVideoState() {
-            const track = currentVideoTrack();
+            const t = currentVideoTrack();
             for (const st of peers.values()) {
-                if (st.videoSender) {
-                    try { await st.videoSender.replaceTrack(track); } catch (e) { console.warn("vid swap:", e); }
-                    applyVideoParams(st);
-                }
+                if (!st.videoSender) continue;
+                try { await st.videoSender.replaceTrack(t); applyVideoParams(st); } catch (e) { console.warn(e); }
             }
         }
-
         async function syncAudioState() {
-            const track = currentAudioTrack();
+            const t = currentAudioTrack();
             for (const st of peers.values()) {
-                if (st.audioSender) {
-                    try { await st.audioSender.replaceTrack(track); } catch (e) { console.warn("aud swap:", e); }
-                }
+                if (!st.audioSender) continue;
+                try { await st.audioSender.replaceTrack(t); applyAudioParams(st); } catch (e) { console.warn(e); }
             }
         }
-
         function applyVideoParams(st) {
             if (!st.videoSender) return;
             try {
-                const params = st.videoSender.getParameters();
-                if (!params.encodings || !params.encodings.length) params.encodings = [{}];
-                const enc = params.encodings[0];
-
+                const p = st.videoSender.getParameters();
+                if (!p.encodings || !p.encodings.length) p.encodings = [{}];
+                const e = p.encodings[0], pr = preset();
                 if (sharing) {
-                    enc.maxBitrate = mediaSettings.screenBitrateKbps * 1000;
-                    enc.maxFramerate = mediaSettings.screenQuality === "perf" ? 30 : 60;
-                    enc.priority = "high";
-                    enc.networkPriority = "high";
-                    params.degradationPreference = mediaSettings.screenQuality === "perf"
-                        ? "maintain-framerate" : "maintain-resolution";
+                    e.maxBitrate = pr.screenBitrateKbps * 1000;
+                    e.maxFramerate = pr.screenFps;
+                    e.priority = "high"; e.networkPriority = "high";
+                    p.degradationPreference = mediaSettings.preset === "fast" ? "maintain-framerate" : "maintain-resolution";
                 } else if (camOn) {
-                    enc.maxBitrate = mediaSettings.camBitrateKbps * 1000;
-                    enc.maxFramerate = mediaSettings.camFps;
-                    enc.priority = "high";
-                    enc.networkPriority = "high";
-                    params.degradationPreference = "maintain-framerate";
+                    e.maxBitrate = pr.camBitrateKbps * 1000;
+                    e.maxFramerate = mediaSettings.camFps;
+                    e.priority = "high"; e.networkPriority = "high";
+                    p.degradationPreference = "maintain-framerate";
                 } else {
-                    // Blank placeholder — keep it nearly free
-                    enc.maxBitrate = 80000;
-                    enc.maxFramerate = 5;
-                    enc.priority = "low";
-                    enc.networkPriority = "low";
-                    params.degradationPreference = "maintain-framerate";
+                    e.maxBitrate = 100000; e.maxFramerate = 10;
+                    e.priority = "low"; e.networkPriority = "low";
                 }
-                st.videoSender.setParameters(params).catch(() => { });
+                st.videoSender.setParameters(p).catch(() => { });
             } catch { }
         }
-
         function removePeer(id, announce) {
-            const st = peers.get(id);
-            if (!st) return;
+            const st = peers.get(id); if (!st) return;
             try { st.pc.close(); } catch { }
-            if (st.tile) {
-                st.tile.classList.add("leaving");
-                setTimeout(() => st.tile?.remove(), 280);
-            }
-            analysers.delete(id);
-            peers.delete(id);
+            if (st.tile) { st.tile.classList.add("leaving"); setTimeout(() => st.tile?.remove(), 280); }
+            analysers.delete(id); peers.delete(id);
             if (announce) tlSys(`${st.name} left.`);
             setTimeout(refreshGrid, 200);
             updatePeerCount(); refreshAdmin();
         }
 
-        /* ============================================================
-           Tiles
-           ============================================================ */
+        /* ---- Tiles ---- */
         function makeTile(id, name, isSelf) {
             const el = document.createElement("div");
             el.className = "tile" + (settings.viz ? " viz-on" : "");
             el.dataset.peerId = id;
             el.draggable = !isSelf;
             el.innerHTML = `
-        <video autoplay playsinline ${isSelf ? "muted" : ""}></video>
-        <div class="placeholder"><div class="avatar">${escapeHtml(initials(name))}</div></div>
-        <div class="ring"></div>
-        <div class="drag-handle"></div>
-        <div class="tileActions"></div>
-        <div class="badges"></div>
-        <div class="label"></div>
-        <div class="viz">${Array.from({ length: 14 }, () => '<div class="bar"></div>').join("")}</div>
-      `;
+    <video autoplay playsinline ${isSelf ? "muted" : ""}></video>
+    <div class="placeholder"><div class="avatar">${escapeHtml(initials(name))}</div></div>
+    <div class="ring"></div>
+    <div class="drag-handle"></div>
+    <div class="tileActions"></div>
+    <div class="badges"></div>
+    <div class="label"></div>
+    <div class="viz">${Array.from({ length: 14 }, () => '<div class="bar"></div>').join("")}</div>`;
             if (settings.mirror && isSelf) el.classList.add("mirror");
             return el;
         }
-
         function addSelfTile() {
             const el = makeTile("self", myName, true);
             el.querySelector("video").srcObject = localStream;
             $("#grid").prepend(el);
         }
-
         function renderTileContent(st) {
-            const el = st.tile;
-            if (!el) return;
-            const adminMark = st.isAdmin ? ` <span class="admin-star">${icon("star", "ic")}</span>` : "";
-            el.querySelector(".label").innerHTML = `<span>${escapeHtml(st.name)}</span>${adminMark}`;
-
-            const video = el.querySelector("video");
-            if (video.srcObject !== st.stream) video.srcObject = st.stream;
-
-            // Visibility of the placeholder is driven by the peer's REPORTED state,
-            // not by "does the stream have a track" — because the stream always
-            // carries a blank placeholder track from the moment the peer connects.
-            const hasVideo = !!(st.video || st.screen);
-            el.classList.toggle("has-video", hasVideo);
-
-            const badges = el.querySelector(".badges");
-            badges.innerHTML = "";
-            if (st.isAdmin) badges.insertAdjacentHTML("beforeend", `<span class="badge admin">${icon("shield-check")} Admin</span>`);
-            if (st.muted) badges.insertAdjacentHTML("beforeend", `<span class="badge muted">${icon("badge-mute")}</span>`);
-            if (st.screen) badges.insertAdjacentHTML("beforeend", `<span class="badge screen">${icon("screen")} Sharing</span>`);
-
+            const el = st.tile; if (!el) return;
+            const am = st.isAdmin ? ` <span class="admin-star">${icon("star", "ic")}</span>` : "";
+            el.querySelector(".label").innerHTML = `<span>${escapeHtml(st.name)}</span>${am}`;
+            const v = el.querySelector("video");
+            if (v.srcObject !== st.stream) v.srcObject = st.stream;
+            el.classList.toggle("has-video", !!(st.video || st.screen));
+            const b = el.querySelector(".badges"); b.innerHTML = "";
+            if (st.isAdmin) b.insertAdjacentHTML("beforeend", `<span class="badge admin">${icon("shield-check")} Admin</span>`);
+            if (st.muted) b.insertAdjacentHTML("beforeend", `<span class="badge muted">${icon("badge-mute")}</span>`);
+            if (st.screen) b.insertAdjacentHTML("beforeend", `<span class="badge screen">${icon("screen")} Sharing</span>`);
             el.classList.toggle("spotlight", !!st.screen);
             el.classList.toggle("mirror", settings.mirror && st.id === "self");
         }
-
         function updateTile(st) {
-            if (!st.tile) {
-                st.tile = makeTile(st.id, st.name, false);
-                $("#grid").appendChild(st.tile);
-                attachTileInteractions(st);
-            }
-            renderTileContent(st);
-            refreshGrid(); updatePeerCount();
+            if (!st.tile) { st.tile = makeTile(st.id, st.name, false); $("#grid").appendChild(st.tile); attachTileInteractions(st); }
+            renderTileContent(st); refreshGrid(); updatePeerCount();
         }
-
         function updateSelfTile() {
-            const el = document.querySelector('.tile[data-peer-id="self"]');
-            if (!el) return;
-            const viewStream = new MediaStream();
-            localStream?.getAudioTracks().forEach((t) => viewStream.addTrack(t));
-            if (sharing && screenStream) screenStream.getVideoTracks().forEach((t) => viewStream.addTrack(t));
-            else if (camOn && camStream) camStream.getVideoTracks().forEach((t) => viewStream.addTrack(t));
-            el.querySelector("video").srcObject = viewStream;
-
+            const el = document.querySelector('.tile[data-peer-id="self"]'); if (!el) return;
+            const vs = new MediaStream();
+            localStream?.getAudioTracks().forEach((t) => vs.addTrack(t));
+            if (sharing && screenStream) screenStream.getVideoTracks().forEach((t) => vs.addTrack(t));
+            else if (camOn && camStream) camStream.getVideoTracks().forEach((t) => vs.addTrack(t));
+            el.querySelector("video").srcObject = vs;
             el.classList.toggle("mirror", settings.mirror && !sharing);
             el.classList.toggle("has-video", sharing || camOn);
-
-            const badges = el.querySelector(".badges");
-            badges.innerHTML = "";
-            if (isAdmin) badges.insertAdjacentHTML("beforeend", `<span class="badge admin">${icon("shield-check")}</span>`);
-            if (!micOn) badges.insertAdjacentHTML("beforeend", `<span class="badge muted">${icon("badge-mute")}</span>`);
-            if (sharing) badges.insertAdjacentHTML("beforeend", `<span class="badge screen">${icon("screen")}</span>`);
-
+            const b = el.querySelector(".badges"); b.innerHTML = "";
+            if (isAdmin) b.insertAdjacentHTML("beforeend", `<span class="badge admin">${icon("shield-check")}</span>`);
+            if (!micOn) b.insertAdjacentHTML("beforeend", `<span class="badge muted">${icon("badge-mute")}</span>`);
+            if (sharing) b.insertAdjacentHTML("beforeend", `<span class="badge screen">${icon("screen")}</span>`);
             el.classList.toggle("spotlight", sharing);
             refreshGrid();
         }
-
         function attachTileInteractions(st) {
             const tile = st.tile;
             const actions = tile.querySelector(".tileActions");
@@ -2819,7 +3577,6 @@
             fs.innerHTML = icon("maximize", "ic ic-sm");
             fs.onclick = (e) => { e.stopPropagation(); toggleFullscreen(tile); };
             actions.appendChild(fs);
-
             tile.addEventListener("dragstart", (e) => {
                 if (st.id === "self") return e.preventDefault();
                 e.dataTransfer.setData("text/plain", st.id);
@@ -2839,57 +3596,47 @@
             tile.addEventListener("dragleave", () => tile.classList.remove("drop-target"));
             tile.addEventListener("drop", (e) => { e.preventDefault(); tile.classList.remove("drop-target"); });
             tile.addEventListener("dragend", () => {
-                tile.classList.remove("dragging");
-                tile.style.opacity = "";
+                tile.classList.remove("dragging"); tile.style.opacity = "";
                 $$(".tile").forEach((t) => t.classList.remove("drop-target"));
             });
         }
-
         function flipSwap(a, b) {
             if (!a || !b || a === b) return;
-            const aRect = a.getBoundingClientRect();
-            const bRect = b.getBoundingClientRect();
-            const aNext = a.nextSibling === b ? a : a.nextSibling;
+            const ar = a.getBoundingClientRect(), br = b.getBoundingClientRect();
+            const an = a.nextSibling === b ? a : a.nextSibling;
             b.parentNode.insertBefore(a, b);
-            if (aNext) b.parentNode.insertBefore(b, aNext);
-            const aNew = a.getBoundingClientRect();
-            const bNew = b.getBoundingClientRect();
-            const aDx = aRect.left - aNew.left, aDy = aRect.top - aNew.top;
-            const bDx = bRect.left - bNew.left, bDy = bRect.top - bNew.top;
+            if (an) b.parentNode.insertBefore(b, an);
+            const anr = a.getBoundingClientRect(), bnr = b.getBoundingClientRect();
+            const adx = ar.left - anr.left, ady = ar.top - anr.top;
+            const bdx = br.left - bnr.left, bdy = br.top - bnr.top;
             a.style.transition = "none"; b.style.transition = "none";
-            a.style.transform = `translate(${aDx}px, ${aDy}px)`;
-            b.style.transform = `translate(${bDx}px, ${bDy}px)`;
+            a.style.transform = `translate(${adx}px,${ady}px)`;
+            b.style.transform = `translate(${bdx}px,${bdy}px)`;
             requestAnimationFrame(() => {
                 const ease = settings.animations ? "transform .42s cubic-bezier(.34,1.56,.64,1)" : "none";
                 a.style.transition = ease; b.style.transition = ease;
                 a.style.transform = ""; b.style.transform = "";
             });
         }
-
         function refreshGrid() { updatePeerCount(); }
-        function updatePeerCount() {
-            document.title = `VoiceChat · ${roomId} · ${peers.size + 1} in call`;
-        }
+        function updatePeerCount() { document.title = `VoiceChat · ${roomId} · ${peers.size + 1} in call`; }
         function toggleFullscreen(el) {
             if (!document.fullscreenElement) el.requestFullscreen?.();
             else document.exitFullscreen?.();
         }
 
-        /* ============================================================
-           Visualizer
-           ============================================================ */
+        /* ---- Visualizer ---- */
         function attachAnalyser(id, stream) {
             if (!audioCtx) return;
             if (!stream.getAudioTracks().length) return;
-            const existing = analysers.get(id);
-            if (existing) { try { existing.source.disconnect(); } catch { } }
+            const ex = analysers.get(id);
+            if (ex) try { ex.source.disconnect(); } catch { }
             try {
-                const source = audioCtx.createMediaStreamSource(stream);
-                const analyser = audioCtx.createAnalyser();
-                analyser.fftSize = 128;
-                analyser.smoothingTimeConstant = 0.55;
-                source.connect(analyser);
-                analysers.set(id, { source, analyser, data: new Uint8Array(analyser.frequencyBinCount) });
+                const src = audioCtx.createMediaStreamSource(stream);
+                const an = audioCtx.createAnalyser();
+                an.fftSize = 128; an.smoothingTimeConstant = 0.55;
+                src.connect(an);
+                analysers.set(id, { source: src, analyser: an, data: new Uint8Array(an.frequencyBinCount) });
             } catch { }
         }
         function vizLoop(now) {
@@ -2899,75 +3646,58 @@
         function updateVisualizers() {
             for (const [id, a] of analysers) {
                 a.analyser.getByteFrequencyData(a.data);
-                const tile = document.querySelector(`.tile[data-peer-id="${id}"]`);
-                if (tile) applyVizToTile(tile, a.data);
+                const t = document.querySelector(`.tile[data-peer-id="${id}"]`);
+                if (t) applyVizToTile(t, a.data);
             }
         }
         function applyVizToTile(tile, data) {
             const bars = tile.querySelectorAll(".viz .bar");
-            const bins = data.length;
-            let maxLevel = 0;
+            const bins = data.length; let mx = 0;
             for (let i = 0; i < bars.length; i++) {
                 const lo = Math.floor(bins * i / bars.length);
                 const hi = Math.max(lo + 1, Math.floor(bins * (i + 1) / bars.length));
-                let sum = 0;
-                for (let j = lo; j < hi; j++) sum += data[j];
-                const avg = sum / (hi - lo) / 255;
-                const level = Math.max(0.06, Math.min(1, avg * 1.6));
-                bars[i].style.setProperty("--h", level.toFixed(3));
-                if (level > maxLevel) maxLevel = level;
+                let s = 0; for (let j = lo; j < hi; j++) s += data[j];
+                const avg = s / (hi - lo) / 255;
+                const l = Math.max(0.06, Math.min(1, avg * 1.6));
+                bars[i].style.setProperty("--h", l.toFixed(3));
+                if (l > mx) mx = l;
             }
-            tile.style.setProperty("--level", maxLevel.toFixed(3));
-            tile.classList.toggle("speaking", maxLevel > 0.22);
+            tile.style.setProperty("--level", mx.toFixed(3));
+            tile.classList.toggle("speaking", mx > 0.22);
         }
 
-        /* ============================================================
-           Join
-           ============================================================ */
+        /* ---- Join ---- */
         function getMediaAPI() {
             if (navigator.mediaDevices?.getUserMedia) return navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
-            const legacy = navigator.getUserMedia || navigator.webkitGetUserMedia
-                || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-            if (legacy) return (c) => new Promise((res, rej) => legacy.call(navigator, c, res, rej));
+            const l = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+            if (l) return (c) => new Promise((res, rej) => l.call(navigator, c, res, rej));
             return null;
         }
         function showBanner(text, sticky) {
-            const b = $("#banner");
-            b.textContent = text;
-            b.classList.add("show");
-            if (!sticky) {
-                clearTimeout(showBanner._t);
-                showBanner._t = setTimeout(() => b.classList.remove("show"), 7000);
-            }
+            const b = $("#banner"); b.textContent = text; b.classList.add("show");
+            if (!sticky) { clearTimeout(showBanner._t); showBanner._t = setTimeout(() => b.classList.remove("show"), 7000); }
         }
-
         async function join() {
             myName = ($("#nameInput").value || "").trim() || "Guest";
             roomId = ($("#roomInput").value || "").trim();
             if (!roomId) { $("#roomInput").focus(); return; }
 
             initAudio();
-            const getUserMedia = getMediaAPI();
+            const gu = getMediaAPI();
             localStream = new MediaStream();
 
-            if (!getUserMedia) {
-                showBanner("Your browser doesn't expose getUserMedia. Chat, files, sounds work; media won't.");
-            } else if (!window.isSecureContext) {
-                showBanner("⚠️ Insecure origin — mic/camera disabled. Use https:// or http://localhost.");
-            } else if (settings.micOnJoin) {
+            if (!gu) showBanner("No getUserMedia — chat/files/sounds work; media won't.");
+            else if (!window.isSecureContext) showBanner("⚠️ Insecure origin — mic/camera disabled.");
+            else if (settings.micOnJoin) {
                 try {
                     const c = { noiseSuppression: settings.ns, echoCancellation: settings.ec, autoGainControl: true };
-                    const savedMic = localStorage.getItem("vc.micId");
-                    if (savedMic) c.deviceId = { exact: savedMic };
-                    const s = await getUserMedia({ audio: c, video: false });
-                    localStream = s;
-                    micOn = true;
+                    const sm = localStorage.getItem("vc.micId"); if (sm) c.deviceId = { exact: sm };
+                    const s = await gu({ audio: c, video: false });
+                    localStream = s; micOn = true;
                     attachAnalyser("self", localStream);
                 } catch (err) {
-                    console.warn("mic:", err);
                     const n = err?.name || "";
-                    if (n === "NotAllowedError" || n === "SecurityError")
-                        showBanner("Microphone denied. Join with chat + sound pad.");
+                    if (n === "NotAllowedError" || n === "SecurityError") showBanner("Microphone denied.");
                     else if (n === "NotFoundError") showBanner("No microphone found.");
                     else showBanner("Mic unavailable: " + (err.message || err));
                 }
@@ -2978,46 +3708,43 @@
             $("#app").classList.remove("hidden");
             setTimeout(() => $("#join").classList.add("hidden"), 400);
 
-            addSelfTile();
-            updateSelfTile();
-            updatePeerCount();
+            addSelfTile(); updateSelfTile(); updatePeerCount();
             buildSoundPad();
-            $("#micBtn").classList.toggle("on", micOn);
-            $("#micBtn").classList.toggle("off", !micOn);
-            $("#camBtn").classList.toggle("on", camOn);
-            $("#camBtn").classList.toggle("off", !camOn);
+            updateMicButtonUI(); updateCamButtonUI();
 
             if (!vizRAF) vizRAF = requestAnimationFrame(vizLoop);
             setInterval(updateSoundRate, 250);
             refreshDevices();
+            refreshCustomSounds();
             connectSignaling();
             openPanel("chat");
         }
+        function updateMicButtonUI() {
+            const g = $("#micGroup");
+            g.classList.toggle("on", micOn); g.classList.toggle("off", !micOn);
+        }
+        function updateCamButtonUI() {
+            const g = $("#camGroup");
+            g.classList.toggle("on", camOn || sharing); g.classList.toggle("off", !camOn && !sharing);
+        }
 
-        /* ============================================================
-           Timeline
-           ============================================================ */
+        /* ---- Timeline ---- */
         const timelineItems = [];
         function tlInsert(at, el) {
-            const wrap = $("#timeline");
-            timelineItems.push({ at, el });
-            let inserted = false;
-            for (const child of wrap.children) {
-                if (at < Number(child.dataset.at || 0)) {
-                    wrap.insertBefore(el, child); inserted = true; break;
-                }
+            const w = $("#timeline"); timelineItems.push({ at, el });
+            let ins = false;
+            for (const c of w.children) {
+                if (at < Number(c.dataset.at || 0)) { w.insertBefore(el, c); ins = true; break; }
             }
-            if (!inserted) wrap.appendChild(el);
-            wrap.scrollTop = wrap.scrollHeight;
+            if (!ins) w.appendChild(el);
+            w.scrollTop = w.scrollHeight;
         }
         function tlChat(who, text, isSelf, at) {
             at = at || Date.now();
             const el = document.createElement("div");
             el.className = "tlItem" + (isSelf ? " self" : "");
             el.dataset.at = at;
-            el.innerHTML = `
-        <div class="meta"><span class="who">${escapeHtml(who)}</span> · ${fmtTime(at)}</div>
-        <div class="body">${escapeHtml(text)}</div>`;
+            el.innerHTML = `<div class="meta"><span class="who">${escapeHtml(who)}</span> · ${fmtTime(at)}</div><div class="body">${escapeHtml(text)}</div>`;
             tlInsert(at, el);
         }
         function tlSys(text) {
@@ -3028,311 +3755,352 @@
         }
         function tlSound(who, soundId, isSelf) {
             const at = Date.now();
-            const def = SOUND_DEFS[soundId] || { name: soundId, icon: "bell" };
+            let name = soundId, ic = "bell";
+            if (soundId.startsWith("file:")) {
+                const s = customSounds.find((x) => x.id === soundId);
+                name = s ? s.name : soundId.slice(5);
+                ic = "wave-sound";
+            } else if (SOUND_DEFS[soundId]) {
+                name = SOUND_DEFS[soundId].name;
+                ic = SOUND_DEFS[soundId].icon;
+            }
             const el = document.createElement("div");
             el.className = "tlItem sound"; el.dataset.at = at;
-            el.innerHTML = `<div class="bubble">${icon(def.icon)} <b>${escapeHtml(who)}</b> · ${def.name}</div>`;
+            el.innerHTML = `<div class="bubble">${icon(ic)} <b>${escapeHtml(who)}</b> · ${escapeHtml(name)}</div>`;
             tlInsert(at, el);
         }
         function tlFile(meta) {
             const at = meta.uploaded || Date.now();
             const isImg = (meta.mime || "").startsWith("image/");
             const isVid = (meta.mime || "").startsWith("video/");
-            const fileIcon = isImg ? "image" : isVid ? "film" : "file";
-            const bg = isImg ? `style="background-image:url('${meta.url}')"` : "";
+            const isAud = (meta.mime || "").startsWith("audio/");
+
+            let preview = "";
+            if (isImg) preview = `<img class="chatMedia" src="${meta.url}" alt="${escapeHtml(meta.name)}" loading="lazy">`;
+            else if (isVid) preview = `<video class="chatMedia" src="${meta.url}" controls preload="metadata"></video>`;
+            else if (isAud) preview = `<audio class="chatAudio" src="${meta.url}" controls preload="metadata"></audio>`;
+
             const el = document.createElement("div");
-            el.className = "tlItem file"; el.dataset.at = at;
+            el.className = "tlItem file";
+            el.dataset.at = at;
             el.innerHTML = `
-        <div class="meta"><span class="who">${escapeHtml(meta.uploader || "Peer")}</span> · ${fmtTime(at)}</div>
-        <div class="fileChip">
-          <div class="icon" ${bg}>${isImg ? "" : icon(fileIcon, "ic")}</div>
-          <div class="info">
-            <div class="nm">${escapeHtml(meta.name)}</div>
-            <div class="sz">${fmtBytes(meta.size)}</div>
-          </div>
-          <a href="${meta.url}" download="${escapeHtml(meta.name)}" style="color:var(--text-3);text-decoration:none;padding:.35rem" onclick="event.stopPropagation()">${icon("download", "ic ic-sm")}</a>
-        </div>`;
-            el.querySelector(".fileChip").onclick = () => {
-                if (isImg) openLightbox(meta.url); else window.open(meta.url, "_blank");
-            };
+    <div class="meta"><span class="who">${escapeHtml(meta.uploader || "Peer")}</span> · ${fmtTime(at)}</div>
+    <div class="fileChat">
+      ${preview}
+      <div class="fileFooter">
+        <span class="fileName">${escapeHtml(meta.name)}</span>
+        <span class="fileSize">${fmtBytes(meta.size)}</span>
+        <a href="${meta.url}" download="${escapeHtml(meta.name)}" class="fileDlBtn" title="Download" onclick="event.stopPropagation()">${icon("download", "ic ic-sm")}</a>
+      </div>
+    </div>`;
+            if (isImg) el.querySelector(".chatMedia").onclick = () => openLightbox(meta.url);
             tlInsert(at, el);
         }
 
-        /* ============================================================
-           Files
-           ============================================================ */
+        /* ---- Files ---- */
         function onFileReceived(m) {
             if (files.has(m.id)) return;
             files.set(m.id, m);
-            renderFiles();
-            tlFile(m);
-            if ($("#filesTab").classList.contains("hidden")) {
-                const dot = $("#filesDot"); if (dot) dot.classList.remove("hidden");
-            }
+            renderFiles(); tlFile(m);
+            if ($("#filesTab").classList.contains("hidden")) $("#filesDot")?.classList.remove("hidden");
         }
         function renderFiles() {
-            const grid = $("#filesGrid");
-            grid.innerHTML = "";
+            const g = $("#filesGrid"); g.innerHTML = "";
             const sorted = [...files.values()].sort((a, b) => (b.uploaded || 0) - (a.uploaded || 0));
             for (const f of sorted) {
                 const isImg = (f.mime || "").startsWith("image/");
                 const isVid = (f.mime || "").startsWith("video/");
-                const fileIcon = isImg ? "image" : isVid ? "film" : "file";
+                const ic = isImg ? "image" : isVid ? "film" : "file";
                 const card = document.createElement("div");
                 card.className = "fileCard";
                 card.innerHTML = `
-          <div class="thumb" ${isImg ? `style="background-image:url('${f.url}')"` : ""}>${isImg ? "" : icon(fileIcon, "ic ic-lg")}</div>
-          <div class="fcMeta">${fmtBytes(f.size)}</div>
-          <div class="fcName">${escapeHtml(f.name)}</div>
-          <a class="fcDl" href="${f.url}" download="${escapeHtml(f.name)}" onclick="event.stopPropagation()">${icon("download", "ic ic-sm")}</a>`;
+      <div class="thumb" ${isImg ? `style="background-image:url('${f.url}')"` : ""}>${isImg ? "" : icon(ic, "ic")}</div>
+      <div class="fcMeta">${fmtBytes(f.size)}</div>
+      <div class="fcName">${escapeHtml(f.name)}</div>
+      <a class="fcDl" href="${f.url}" download="${escapeHtml(f.name)}" onclick="event.stopPropagation()">${icon("download", "ic ic-sm")}</a>`;
                 card.onclick = () => { if (isImg) openLightbox(f.url); else window.open(f.url, "_blank"); };
-                grid.appendChild(card);
+                g.appendChild(card);
             }
         }
         function uploadOne(file) {
             return new Promise((resolve, reject) => {
+                const iconName = file.type.startsWith("image/") ? "image"
+                    : file.type.startsWith("video/") ? "film"
+                        : file.type.startsWith("audio/") ? "wave-sound"
+                            : "file";
+
                 const row = document.createElement("div");
                 row.className = "upItem";
-                row.innerHTML = `<span class="upName">${escapeHtml(file.name)}</span><div class="upBar"></div><span class="upPct">0%</span>`;
+                row.innerHTML = `
+      <div class="upTop">
+        <div class="upIcon">${icon(iconName, "ic")}</div>
+        <span class="upName">${escapeHtml(file.name)}</span>
+        <button class="upCancel" title="Cancel">${icon("x", "ic")}</button>
+      </div>
+      <div class="upTrack"></div>
+      <div class="upBottom">
+        <span class="upStat">${fmtBytes(file.size)}</span>
+        <span class="upPct">0%</span>
+      </div>`;
                 $("#uploadQueue").appendChild(row);
+
+                const track = row.querySelector(".upTrack");
+                const pct = row.querySelector(".upPct");
+                const stat = row.querySelector(".upStat");
+                const cancel = row.querySelector(".upCancel");
+
                 const xhr = new XMLHttpRequest();
                 xhr.open("POST", `/upload/${encodeURIComponent(roomId)}`);
+                xhr.timeout = 0;
+
+                let lastBytes = 0;
+                let lastTime = performance.now();
+                let speed = 0;
+
                 xhr.upload.onprogress = (e) => {
                     if (!e.lengthComputable) return;
                     const p = e.loaded / e.total;
-                    row.querySelector(".upBar").style.setProperty("--p", (p * 100).toFixed(0) + "%");
-                    row.querySelector(".upPct").textContent = (p * 100).toFixed(0) + "%";
+                    const now = performance.now();
+
+                    if (now - lastTime > 200) {
+                        const inst = (e.loaded - lastBytes) / ((now - lastTime) / 1000);
+                        speed = speed ? speed * 0.7 + inst * 0.3 : inst;
+                        lastBytes = e.loaded;
+                        lastTime = now;
+                    }
+
+                    track.style.setProperty("--p", (p * 100).toFixed(1) + "%");
+                    pct.textContent = (p * 100).toFixed(1) + "%";
+
+                    const parts = [`${fmtBytes(e.loaded)} / ${fmtBytes(e.total)}`];
+                    if (speed > 0) {
+                        parts.push(fmtBytes(speed) + "/s");
+                        const remain = (e.total - e.loaded) / speed;
+                        if (remain > 0.5 && remain < 3600) parts.push(`${Math.ceil(remain)}s left`);
+                    }
+                    stat.textContent = parts.join(" · ");
                 };
+
                 xhr.onload = () => {
                     if (xhr.status === 200) {
                         row.classList.add("done");
-                        row.querySelector(".upPct").textContent = "✓";
+                        pct.textContent = "✓";
+                        stat.textContent = fmtBytes(file.size) + " · done";
+                        track.style.setProperty("--p", "100%");
                         setTimeout(() => row.remove(), 2500);
                         try { resolve(JSON.parse(xhr.responseText)); } catch { resolve(null); }
                     } else {
                         row.classList.add("error");
                         let msg = "Failed";
                         try { msg = JSON.parse(xhr.responseText).error || msg; } catch { }
-                        row.querySelector(".upPct").textContent = msg;
+                        pct.textContent = msg;
+                        stat.textContent = "";
                         reject(new Error(msg));
                     }
                 };
-                xhr.onerror = () => { row.classList.add("error"); row.querySelector(".upPct").textContent = "Network error"; reject(new Error("network")); };
-                const fd = new FormData(); fd.append("file", file); xhr.send(fd);
+
+                xhr.onerror = () => {
+                    row.classList.add("error");
+                    pct.textContent = "Network error";
+                    stat.textContent = "";
+                    reject(new Error("network"));
+                };
+
+                xhr.onabort = () => {
+                    row.remove();
+                    reject(new Error("cancelled"));
+                };
+
+                cancel.onclick = () => { try { xhr.abort(); } catch { } };
+
+                const fd = new FormData();
+                fd.append("file", file);
+                xhr.send(fd);
             });
         }
         async function uploadFiles(list) {
             if (!list || !list.length) return;
-            for (const f of list) { try { await uploadOne(f); } catch (e) { console.warn(e); } }
+            for (const f of list) try { await uploadOne(f); } catch (e) { console.warn(e); }
         }
 
-        /* ============================================================
-           Sound pad
-           ============================================================ */
-        function buildSoundPad() {
-            const pad = $("#soundPad");
-            pad.innerHTML = "";
+        /* ---- Sound pad ---- */
+        function getAllSounds() {
+            const out = [];
             for (const [id, def] of Object.entries(SOUND_DEFS)) {
+                out.push({ id, name: def.name, icon: def.icon, builtin: true });
+            }
+            for (const s of customSounds) {
+                out.push({ id: s.id, name: s.name, icon: "wave-sound", builtin: false, url: s.url });
+            }
+            return out;
+        }
+        function buildSoundPad() {
+            const pad = $("#soundPad"); pad.innerHTML = "";
+            for (const s of getAllSounds()) {
                 const btn = document.createElement("button");
                 btn.className = "soundBtn";
-                btn.dataset.sound = id;
-                btn.innerHTML = `<div class="si">${icon(def.icon, "")}</div><div class="sn">${def.name}</div>`;
-                btn.onclick = () => fireSound(id, btn);
+                btn.dataset.sound = s.id;
+                btn.title = s.name;
+                btn.innerHTML = `<div class="si">${icon(s.icon, "ic")}</div><div class="sn">${escapeHtml(s.name)}</div>`;
+                btn.onclick = () => fireSound(s.id, btn);
                 pad.appendChild(btn);
             }
         }
         function fireSound(id, btn) {
-            const check = soundAllowed();
-            if (!check.ok) { tlSys(`Sound blocked: ${check.reason}`); updateSoundRate(); return; }
-            playSound(id);
-            send({ t: "sound", sound: id });
+            const force = isAdmin && adminBypassRate;
+            if (!force) {
+                const check = soundAllowed();
+                if (!check.ok) { tlSys(`Sound blocked: ${check.reason}`); updateSoundRate(); return; }
+            }
+            playAnySound(id);
+            const msg = { t: "sound", sound: id };
+            if (force) msg.force = true;
+            send(msg);
             btn.classList.add("firing");
             setTimeout(() => btn.classList.remove("firing"), 420);
-            updateSoundRate();
+            if (!force) updateSoundRate();
         }
 
-        /* ============================================================
-           Admin
-           ============================================================ */
+        /* ---- Admin ---- */
         function refreshAdmin() {
             if (!isAdmin) return;
-            const wrap = $("#adminPeers");
-            wrap.innerHTML = "";
+            const w = $("#adminPeers"); w.innerHTML = "";
             for (const st of peers.values()) {
                 const row = document.createElement("div");
                 row.className = "adminRow";
                 const star = st.isAdmin ? `<span class="star">${icon("star", "ic")}</span>` : "";
                 row.innerHTML = `
-          <span class="an">${star} ${escapeHtml(st.name)}</span>
-          <button class="mute">${icon(st.mutedByAdmin ? "vol" : "vol-mute")} ${st.mutedByAdmin ? "Unmute" : "Mute"}</button>
-          <button class="kick danger">${icon("user-x")} Kick</button>`;
+      <span class="an">${star} ${escapeHtml(st.name)}</span>
+      <button class="mute">${icon(st.mutedByAdmin ? "vol" : "vol-mute")} ${st.mutedByAdmin ? "Unmute" : "Mute"}</button>
+      <button class="kick danger">${icon("user-x")} Kick</button>`;
                 row.querySelector(".mute").onclick = () => send({ t: "admin-mute", target: st.id, muted: !st.mutedByAdmin });
                 row.querySelector(".kick").onclick = () => { if (confirm(`Kick ${st.name}?`)) send({ t: "admin-kick", target: st.id }); };
-                wrap.appendChild(row);
+                w.appendChild(row);
             }
         }
 
-        /* ============================================================
-           Media controls
-           ============================================================ */
+        /* ---- Media controls ---- */
         async function toggleMic() {
             let tracks = localStream.getAudioTracks();
             if (!tracks.length) {
-                // Acquire a mic now (user never granted one, or declined at join)
-                const getUserMedia = getMediaAPI();
-                if (!getUserMedia) { showBanner("Microphone unavailable."); return; }
+                const gu = getMediaAPI();
+                if (!gu) { showBanner("Microphone unavailable."); return; }
                 try {
                     const c = { noiseSuppression: settings.ns, echoCancellation: settings.ec, autoGainControl: true };
-                    const savedMic = localStorage.getItem("vc.micId");
-                    if (savedMic) c.deviceId = { exact: savedMic };
-                    const s = await getUserMedia({ audio: c, video: false });
-                    const newTrack = s.getAudioTracks()[0];
-                    localStream.addTrack(newTrack);
-                    newTrack.enabled = true;
-                    micOn = true;
-                    attachAnalyser("self", localStream);
+                    const sm = localStorage.getItem("vc.micId"); if (sm) c.deviceId = { exact: sm };
+                    const s = await gu({ audio: c, video: false });
+                    const nt = s.getAudioTracks()[0];
+                    localStream.addTrack(nt); nt.enabled = true;
+                    micOn = true; attachAnalyser("self", localStream);
                     await syncAudioState();
-                } catch (e) {
-                    showBanner("Microphone access denied.");
-                    return;
-                }
+                } catch (e) { showBanner("Microphone access denied."); return; }
             } else {
                 micOn = !micOn;
                 tracks.forEach((t) => (t.enabled = micOn));
+                await syncAudioState();
             }
-            $("#micBtn").classList.toggle("on", micOn);
-            $("#micBtn").classList.toggle("off", !micOn);
-            updateSelfTile();
+            updateMicButtonUI(); updateSelfTile();
             send({ t: "state", muted: !micOn, video: camOn, screen: sharing });
         }
-
         async function toggleCamera() {
-            const getUserMedia = getMediaAPI();
-            if (!getUserMedia) { showBanner("Camera unavailable."); return; }
-
+            const gu = getMediaAPI();
+            if (!gu) { showBanner("Camera unavailable."); return; }
             if (!camOn) {
                 try {
-                    const savedCam = localStorage.getItem("vc.camId");
-                    const constraints = {
+                    const sc = localStorage.getItem("vc.camId");
+                    const cs = {
                         video: {
                             width: { ideal: mediaSettings.camRes },
                             height: { ideal: Math.round(mediaSettings.camRes * 9 / 16) },
                             frameRate: { ideal: mediaSettings.camFps },
-                        },
-                        audio: false,
+                        }, audio: false
                     };
-                    if (savedCam) constraints.video.deviceId = { exact: savedCam };
-                    camStream = await getUserMedia(constraints);
+                    if (sc) cs.video.deviceId = { exact: sc };
+                    camStream = await gu(cs);
                     camOn = true;
                     camStream.getVideoTracks()[0].contentHint = "motion";
-                    // Swap in the camera BEFORE we touch the old track
                     await syncVideoState();
-                } catch (e) {
-                    showBanner("Camera access denied or unavailable.");
-                    return;
-                }
+                } catch (e) { showBanner("Camera access denied."); return; }
             } else {
-                // Swap to blank/screen FIRST, then stop the camera track.
-                // Ordering matters: stopping first would freeze the remote frame.
-                const oldStream = camStream;
-                camOn = false;
-                camStream = null;
+                const old = camStream; camOn = false; camStream = null;
                 await syncVideoState();
-                oldStream?.getTracks().forEach((t) => t.stop());
+                old?.getTracks().forEach((t) => t.stop());
             }
-
-            $("#camBtn").classList.toggle("on", camOn);
-            $("#camBtn").classList.toggle("off", !camOn);
-            updateSelfTile();
+            updateCamButtonUI(); updateSelfTile();
             send({ t: "state", muted: !micOn, video: camOn, screen: sharing });
         }
-
         async function toggleScreenShare() {
             if (sharing) return stopScreenShare();
-            if (!navigator.mediaDevices?.getDisplayMedia) {
-                showBanner("Screen sharing isn't available."); return;
-            }
-            const perf = mediaSettings.screenQuality === "perf";
-            const constraints = {
-                video: perf
-                    ? { width: { ideal: 1280, max: 1280 }, height: { ideal: 720, max: 720 }, frameRate: { ideal: 30, max: 30 } }
-                    : { width: { ideal: 1920, max: 1920 }, height: { ideal: 1080, max: 1080 }, frameRate: { ideal: 60, max: 60 } },
-                audio: false,
+            if (!navigator.mediaDevices?.getDisplayMedia) { showBanner("Not available."); return; }
+            const p = preset();
+            const cs = {
+                video: {
+                    width: { ideal: p.screenRes, max: p.screenRes },
+                    height: { ideal: Math.round(p.screenRes * 9 / 16), max: Math.round(p.screenRes * 9 / 16) },
+                    frameRate: { ideal: p.screenFps, max: p.screenFps },
+                }, audio: false
             };
-            try {
-                screenStream = await navigator.mediaDevices.getDisplayMedia(constraints);
-            } catch (e) {
-                if (e.name !== "NotAllowedError") showBanner("Screen share failed: " + e.message);
-                return;
-            }
-            const track = screenStream.getVideoTracks()[0];
-            track.contentHint = perf ? "motion" : "detail";
-            track.addEventListener("ended", () => stopScreenShare());
-            sharing = true;
-            $("#screenBtn").classList.add("on");
-            await syncVideoState();
-            updateSelfTile();
+            try { screenStream = await navigator.mediaDevices.getDisplayMedia(cs); }
+            catch (e) { if (e.name !== "NotAllowedError") showBanner("Screen share failed: " + e.message); return; }
+            const t = screenStream.getVideoTracks()[0];
+            t.contentHint = mediaSettings.preset === "fast" ? "motion" : "detail";
+            t.addEventListener("ended", () => stopScreenShare());
+            sharing = true; $("#screenBtn").classList.add("on");
+            await syncVideoState(); updateSelfTile();
             send({ t: "state", muted: !micOn, video: camOn, screen: true });
         }
-
         async function stopScreenShare() {
             if (!sharing) return;
-            // Swap to camera/blank FIRST — then stop the screen track.
-            const oldStream = screenStream;
-            sharing = false;
-            screenStream = null;
+            const old = screenStream; sharing = false; screenStream = null;
             $("#screenBtn").classList.remove("on");
             await syncVideoState();
-            oldStream?.getTracks().forEach((t) => t.stop());
+            old?.getTracks().forEach((t) => t.stop());
             updateSelfTile();
             send({ t: "state", muted: !micOn, video: camOn, screen: false });
         }
 
-        /* ============================================================
-           Devices
-           ============================================================ */
+        /* ---- Devices ---- */
         async function refreshDevices() {
             try {
-                const devices = await navigator.mediaDevices.enumerateDevices();
-                const mics = devices.filter((d) => d.kind === "audioinput");
-                const cams = devices.filter((d) => d.kind === "videoinput");
+                const ds = await navigator.mediaDevices.enumerateDevices();
+                const mics = ds.filter((d) => d.kind === "audioinput");
+                const cams = ds.filter((d) => d.kind === "videoinput");
                 const mSel = $("#micSelect"), cSel = $("#camSelect");
                 if (!mSel || !cSel) return;
-                const savedMic = localStorage.getItem("vc.micId") || "";
-                const savedCam = localStorage.getItem("vc.camId") || "";
+                const sm = localStorage.getItem("vc.micId") || "";
+                const sc = localStorage.getItem("vc.camId") || "";
                 mSel.innerHTML = '<option value="">System default</option>';
                 cSel.innerHTML = '<option value="">System default</option>';
                 for (const d of mics) {
                     const o = document.createElement("option");
                     o.value = d.deviceId;
                     o.textContent = d.label || `Mic ${d.deviceId.slice(0, 6)}`;
-                    if (d.deviceId === savedMic) o.selected = true;
+                    if (d.deviceId === sm) o.selected = true;
                     mSel.appendChild(o);
                 }
                 for (const d of cams) {
                     const o = document.createElement("option");
                     o.value = d.deviceId;
                     o.textContent = d.label || `Camera ${d.deviceId.slice(0, 6)}`;
-                    if (d.deviceId === savedCam) o.selected = true;
+                    if (d.deviceId === sc) o.selected = true;
                     cSel.appendChild(o);
                 }
                 mSel.onchange = switchMic;
                 cSel.onchange = switchCam;
-            } catch (e) { console.warn("enumerate:", e); }
+            } catch (e) { console.warn(e); }
         }
         async function switchMic() {
             const id = $("#micSelect").value;
             if (id) localStorage.setItem("vc.micId", id); else localStorage.removeItem("vc.micId");
             if (!micOn || !localStream) return;
-            const getUserMedia = getMediaAPI();
-            if (!getUserMedia) return;
+            const gu = getMediaAPI(); if (!gu) return;
             try {
                 const c = { noiseSuppression: settings.ns, echoCancellation: settings.ec, autoGainControl: true };
                 if (id) c.deviceId = { exact: id };
-                const s = await getUserMedia({ audio: c, video: false });
-                const newTrack = s.getAudioTracks()[0];
+                const s = await gu({ audio: c, video: false });
+                const nt = s.getAudioTracks()[0];
                 localStream.getAudioTracks().forEach((t) => { t.stop(); localStream.removeTrack(t); });
-                localStream.addTrack(newTrack);
+                localStream.addTrack(nt);
                 await syncAudioState();
                 attachAnalyser("self", localStream);
                 tlSys("Switched microphone.");
@@ -3342,30 +4110,18 @@
             const id = $("#camSelect").value;
             if (id) localStorage.setItem("vc.camId", id); else localStorage.removeItem("vc.camId");
             if (!camOn) return;
-            // Full reset: off then on
-            await toggleCamera();
-            await toggleCamera();
+            await toggleCamera(); await toggleCamera();
             tlSys("Switched camera.");
         }
 
-        /* ============================================================
-           Settings
-           ============================================================ */
-        function openSettings() {
-            $("#settingsBackdrop").classList.add("open");
-            $("#settingsSheet").classList.add("open");
-        }
-        function closeSettings() {
-            $("#settingsBackdrop").classList.remove("open");
-            $("#settingsSheet").classList.remove("open");
-        }
+        /* ---- Settings ---- */
+        function openSettings() { $("#settingsBackdrop").classList.add("open"); $("#settingsSheet").classList.add("open"); }
+        function closeSettings() { $("#settingsBackdrop").classList.remove("open"); $("#settingsSheet").classList.remove("open"); }
         function applySetting(name, value) {
             settings[name] = value;
             switch (name) {
                 case "animations": document.body.classList.toggle("no-anim", !value); break;
-                case "viz":
-                    document.querySelectorAll(".tile").forEach((t) => t.classList.toggle("viz-on", value));
-                    break;
+                case "viz": document.querySelectorAll(".tile").forEach((t) => t.classList.toggle("viz-on", value)); break;
                 case "mirror":
                     document.querySelectorAll(".tile").forEach((t) => {
                         const isSelf = t.dataset.peerId === "self";
@@ -3373,31 +4129,28 @@
                     });
                     break;
                 case "selfTile": {
-                    const self = document.querySelector('.tile[data-peer-id="self"]');
-                    if (self) self.style.display = value ? "" : "none";
+                    const s = document.querySelector('.tile[data-peer-id="self"]');
+                    if (s) s.style.display = value ? "" : "none";
                     break;
                 }
+                case "fec":
+                case "dtx": for (const st of peers.values()) applyAudioParams(st); break;
             }
         }
         function hexToRgba(hex, a) {
             const h = hex.replace("#", "");
-            const r = parseInt(h.slice(0, 2), 16);
-            const g = parseInt(h.slice(2, 4), 16);
-            const b = parseInt(h.slice(4, 6), 16);
-            return `rgba(${r},${g},${b},${a})`;
+            return `rgba(${parseInt(h.slice(0, 2), 16)},${parseInt(h.slice(2, 4), 16)},${parseInt(h.slice(4, 6), 16)},${a})`;
         }
         function applyTheme() {
-            const root = document.documentElement.style;
-            root.setProperty("--accent", theme.accent);
-            root.setProperty("--accent-2", theme.accent2);
-            root.setProperty("--accent-glow", hexToRgba(theme.accent, 0.45));
-            root.setProperty("--accent-glow-2", hexToRgba(theme.accent2, 0.4));
+            const r = document.documentElement.style;
+            r.setProperty("--accent", theme.accent);
+            r.setProperty("--accent-2", theme.accent2);
+            r.setProperty("--accent-glow", hexToRgba(theme.accent, 0.45));
+            r.setProperty("--accent-glow-2", hexToRgba(theme.accent2, 0.4));
             localStorage.setItem("vc.theme", JSON.stringify(theme));
         }
 
-        /* ============================================================
-           Panel
-           ============================================================ */
+        /* ---- Panel ---- */
         function openPanel(tab) {
             $("#stage").classList.add("with-panel");
             $$(".tab").forEach((t) => t.classList.toggle("active", t.dataset.tab === tab));
@@ -3409,21 +4162,23 @@
         }
         function closePanel() { $("#stage").classList.remove("with-panel"); }
         function togglePanel(tab) {
-            const isOpen = $("#stage").classList.contains("with-panel");
-            const cur = document.querySelector(".tab.active")?.dataset.tab;
-            if (isOpen && cur === tab) closePanel(); else openPanel(tab);
+            const o = $("#stage").classList.contains("with-panel");
+            const c = document.querySelector(".tab.active")?.dataset.tab;
+            if (o && c === tab) closePanel(); else openPanel(tab);
         }
         function openLightbox(src) { $("#lightboxImg").src = src; $("#lightbox").classList.add("open"); }
         function closeLightbox() { $("#lightbox").classList.remove("open"); $("#lightboxImg").src = ""; }
 
-        /* ============================================================
-           Wiring
-           ============================================================ */
+        /* ---- Wiring ---- */
         $("#joinBtn").onclick = join;
         $("#roomInput").addEventListener("keydown", (e) => { if (e.key === "Enter") join(); });
         $("#nameInput").addEventListener("keydown", (e) => { if (e.key === "Enter") $("#roomInput").focus(); });
+
         $("#micBtn").onclick = toggleMic;
+        $("#micChevron").onclick = (e) => { e.stopPropagation(); togglePopup("micPopup", $("#micChevron")); };
         $("#camBtn").onclick = toggleCamera;
+        $("#camChevron").onclick = (e) => { e.stopPropagation(); togglePopup("camPopup", $("#camChevron")); };
+
         $("#screenBtn").onclick = toggleScreenShare;
         $("#soundsBtn").onclick = () => togglePanel("sounds");
         $("#chatBtn").onclick = () => togglePanel("chat");
@@ -3444,77 +4199,109 @@
 
         $("#leaveBtn").onclick = () => {
             manuallyLeft = true;
-            for (const st of peers.values()) { try { st.pc.close(); } catch { } }
+            for (const st of peers.values()) try { st.pc.close(); } catch { }
             peers.clear();
             localStream?.getTracks().forEach((t) => t.stop());
             camStream?.getTracks().forEach((t) => t.stop());
             screenStream?.getTracks().forEach((t) => t.stop());
             try { ws?.close(); } catch { }
-            location.hash = "";
-            location.reload();
+            location.hash = ""; location.reload();
         };
 
         $("#adminLoginBtn").onclick = () => {
-            const pwd = $("#adminPwd").value.trim();
-            if (!pwd) return;
-            send({ t: "admin-login", password: pwd });
+            const p = $("#adminPwd").value.trim(); if (!p) return;
+            adminPassword = p;
+            send({ t: "admin-login", password: p });
         };
         $("#adminPwd").addEventListener("keydown", (e) => { if (e.key === "Enter") $("#adminLoginBtn").click(); });
+
+        $("#adminBypass").onclick = () => {
+            adminBypassRate = !adminBypassRate;
+            $("#adminBypass").classList.toggle("on", adminBypassRate);
+            updateSoundRate();
+        };
+
+        $("#soundUpload").onchange = async (e) => {
+            const f = e.target.files?.[0]; if (!f) return;
+            if (!adminPassword) { tlSys("Enter the admin password first."); return; }
+            const fd = new FormData();
+            fd.append("password", adminPassword);
+            fd.append("file", f);
+            try {
+                const r = await fetch("/sounds/upload", { method: "POST", body: fd });
+                const d = await r.json();
+                if (!r.ok) { tlSys("Upload failed: " + (d.error || r.status)); return; }
+                tlSys(`Sound uploaded: ${d.name}`);
+                await refreshCustomSounds();
+            } catch (err) { tlSys("Upload error: " + err.message); }
+            e.target.value = "";
+        };
 
         $$(".switch[data-set]").forEach((sw) => {
             const name = sw.dataset.set;
             sw.classList.toggle("on", !!settings[name]);
             sw.onclick = () => {
-                const value = !sw.classList.contains("on");
-                sw.classList.toggle("on", value);
-                applySetting(name, value);
+                const v = !sw.classList.contains("on");
+                sw.classList.toggle("on", v);
+                $$(`.switch[data-set="${name}"]`).forEach((s) => s.classList.toggle("on", v));
+                applySetting(name, v);
             };
+        });
+
+        function syncMicBitrateUI(v) {
+            audioSettings.bitrateKbps = v;
+            const e1 = $("#micBitrate"); if (e1) e1.value = v;
+            const e2 = $("#micBitrate2"); if (e2) e2.value = v;
+            const v1 = $("#micBitrateVal"); if (v1) v1.textContent = v;
+            const v2 = $("#micBitrateVal2"); if (v2) v2.textContent = v + "k";
+            const lb = $("#micBitrateLabel"); if (lb) lb.textContent = audioQualityLabel(v);
+            for (const st of peers.values()) applyAudioParams(st);
+        }
+        $("#micBitrate")?.addEventListener("input", (e) => syncMicBitrateUI(+e.target.value));
+        $("#micBitrate2")?.addEventListener("input", (e) => syncMicBitrateUI(+e.target.value));
+
+        $$(".segmented").forEach((seg) => {
+            const key = seg.dataset.seg;
+            seg.querySelectorAll("button").forEach((btn) => {
+                btn.onclick = async () => {
+                    seg.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    const val = +btn.dataset.val;
+                    if (key === "camRes") {
+                        mediaSettings.camRes = val;
+                        if (camOn) {
+                            const t = camStream?.getVideoTracks()[0];
+                            try { await t.applyConstraints({ width: { ideal: val }, height: { ideal: Math.round(val * 9 / 16) } }); } catch { }
+                        }
+                    } else if (key === "camFps") {
+                        mediaSettings.camFps = val;
+                        const t = camStream?.getVideoTracks()[0];
+                        if (t) try { await t.applyConstraints({ frameRate: { ideal: val } }); } catch { }
+                        for (const st of peers.values()) applyVideoParams(st);
+                    }
+                };
+            });
         });
 
         $("#colorAccent").addEventListener("input", (e) => { theme.accent = e.target.value; applyTheme(); });
         $("#colorAccent2").addEventListener("input", (e) => { theme.accent2 = e.target.value; applyTheme(); });
 
-        $("#camBitrate").addEventListener("input", (e) => {
-            mediaSettings.camBitrateKbps = +e.target.value;
-            $("#camBitrateVal").textContent = fmtBitrate(mediaSettings.camBitrateKbps);
-            for (const st of peers.values()) applyVideoParams(st);
-        });
-        $("#camRes").addEventListener("change", async (e) => {
-            mediaSettings.camRes = +e.target.value;
-            if (camOn) {
-                const track = camStream?.getVideoTracks()[0];
-                try {
-                    await track.applyConstraints({
-                        width: { ideal: mediaSettings.camRes },
-                        height: { ideal: Math.round(mediaSettings.camRes * 9 / 16) },
-                    });
-                } catch { }
-            }
-        });
-        $("#camFps").addEventListener("change", async (e) => {
-            mediaSettings.camFps = +e.target.value;
-            const track = camStream?.getVideoTracks()[0];
-            if (track) try { await track.applyConstraints({ frameRate: { ideal: mediaSettings.camFps } }); } catch { }
-            for (const st of peers.values()) applyVideoParams(st);
-        });
-        $("#screenQuality").addEventListener("change", (e) => {
-            mediaSettings.screenQuality = e.target.value;
+        $("#screenQuality")?.addEventListener("change", async (e) => {
+            mediaSettings.preset = e.target.value;
             if (sharing) {
-                const track = screenStream?.getVideoTracks()[0];
-                const perf = mediaSettings.screenQuality === "perf";
-                if (track) {
-                    track.contentHint = perf ? "motion" : "detail";
-                    track.applyConstraints(perf
-                        ? { width: { max: 1280 }, height: { max: 720 }, frameRate: { max: 30 } }
-                        : { width: { max: 1920 }, height: { max: 1080 }, frameRate: { max: 60 } }
-                    ).catch(() => { });
+                const p = preset();
+                const t = screenStream?.getVideoTracks()[0];
+                if (t) {
+                    t.contentHint = mediaSettings.preset === "fast" ? "motion" : "detail";
+                    try {
+                        await t.applyConstraints({
+                            width: { max: p.screenRes },
+                            height: { max: Math.round(p.screenRes * 9 / 16) },
+                            frameRate: { max: p.screenFps },
+                        });
+                    } catch { }
                 }
-                for (const st of peers.values()) applyVideoParams(st);
             }
-        });
-        $("#screenBitrate").addEventListener("input", (e) => {
-            mediaSettings.screenBitrateKbps = +e.target.value;
-            $("#screenBitrateVal").textContent = fmtBitrate(mediaSettings.screenBitrateKbps);
             for (const st of peers.values()) applyVideoParams(st);
         });
 
@@ -3534,8 +4321,7 @@
         ["dragleave", "drop"].forEach((ev) => {
             document.addEventListener(ev, (e) => {
                 if (ev === "drop" && e.dataTransfer?.files?.length) {
-                    e.preventDefault();
-                    if (!roomId) return;
+                    e.preventDefault(); if (!roomId) return;
                     uploadFiles(e.dataTransfer.files);
                 }
                 if (ev === "dragleave" && e.relatedTarget) return;
@@ -3545,8 +4331,7 @@
 
         document.addEventListener("paste", (e) => {
             if (!roomId) return;
-            const items = e.clipboardData?.items;
-            if (!items) return;
+            const items = e.clipboardData?.items; if (!items) return;
             const pasted = [];
             for (const it of items) if (it.kind === "file") { const f = it.getAsFile(); if (f) pasted.push(f); }
             if (pasted.length) { e.preventDefault(); openPanel("files"); uploadFiles(pasted); }
@@ -3555,8 +4340,11 @@
         $("#lightboxClose").onclick = closeLightbox;
         $("#lightbox").onclick = (e) => { if (e.target.id === "lightbox") closeLightbox(); };
         document.addEventListener("keydown", (e) => {
-            if (e.key === "Escape" && $("#lightbox").classList.contains("open")) closeLightbox();
-            if (e.key === "Escape" && $("#settingsSheet").classList.contains("open")) closeSettings();
+            if (e.key === "Escape") {
+                if ($("#lightbox").classList.contains("open")) closeLightbox();
+                else if ($("#settingsSheet").classList.contains("open")) closeSettings();
+                else closeAllPopups();
+            }
         });
 
         document.addEventListener("keydown", (e) => {
@@ -3566,8 +4354,7 @@
                 if (!micOn) {
                     micOn = true;
                     localStream?.getAudioTracks().forEach((t) => (t.enabled = true));
-                    $("#micBtn").classList.add("on"); $("#micBtn").classList.remove("off");
-                    updateSelfTile();
+                    updateMicButtonUI(); updateSelfTile();
                     send({ t: "state", muted: false, video: camOn, screen: sharing });
                 }
             }
@@ -3578,8 +4365,7 @@
                 if (micOn) {
                     micOn = false;
                     localStream?.getAudioTracks().forEach((t) => (t.enabled = false));
-                    $("#micBtn").classList.remove("on"); $("#micBtn").classList.add("off");
-                    updateSelfTile();
+                    updateMicButtonUI(); updateSelfTile();
                     send({ t: "state", muted: true, video: camOn, screen: sharing });
                 }
             }
@@ -3593,14 +4379,8 @@
             applyTheme();
             if ($("#colorAccent")) $("#colorAccent").value = theme.accent;
             if ($("#colorAccent2")) $("#colorAccent2").value = theme.accent2;
-            if ($("#camBitrateVal")) $("#camBitrateVal").textContent = fmtBitrate(mediaSettings.camBitrateKbps);
-            if ($("#screenBitrateVal")) $("#screenBitrateVal").textContent = fmtBitrate(mediaSettings.screenBitrateKbps);
-
-            $$(".switch[data-set]").forEach((sw) => {
-                const name = sw.dataset.set;
-                sw.classList.toggle("on", !!settings[name]);
-            });
-
+            syncMicBitrateUI(audioSettings.bitrateKbps);
+            $$(".switch[data-set]").forEach((sw) => sw.classList.toggle("on", !!settings[sw.dataset.set]));
             if (!window.isSecureContext && location.hostname !== "localhost") {
                 showBanner("⚠️ Insecure origin — mic/camera disabled. Use https:// or http://localhost.", true);
             }

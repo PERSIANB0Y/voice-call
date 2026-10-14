@@ -11,7 +11,6 @@ from cryptography.x509.oid import NameOID
 
 # ---- EDIT THIS: your LAN IP (from ipconfig) ------------------------------
 LAN_IP = "10.88.204.161"
-LAN_IP = "10.88.204.161"
 DAYS = 825
 # --------------------------------------------------------------------------
 
