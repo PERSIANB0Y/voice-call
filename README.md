@@ -1,30 +1,29 @@
 # VoiceChat
 
-A self-hosted WebRTC voice/video/screen-share room server with file sharing, sound pad, and admin controls. Single-file Python server, single-file HTML client — no build step, no dependencies beyond pip.
+A self-hosted WebRTC voice, video, and screen-share server with file sharing, a sound pad, and admin controls. One Python file for the backend, one HTML file for the frontend. No build step, no npm, no framework churn.
 
-![Python](https://img.shields.io/badge/python-3.10%2B-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
+Works on Windows, Linux, and macOS. Runs over HTTPS with an auto-generated self-signed certificate, so mic and camera work on any LAN — not just `localhost`.
 
 ---
 
 ## Features
 
-- **Voice & video** — peer-to-peer WebRTC mesh (up to 12 peers per room)
-- **Screen share** — with Fast / Quality presets, works alongside camera
-- **File sharing** — drag & drop, paste from clipboard, or browse; files stored server-side and served to the room
-- **Sound pad** — 6 built-in ringtone clips so users without a mic can "talk"; rate-limited to 1/sec, 10/min
-- **Chat** — merged into a chronological timeline with files and sounds
-- **Voice visualizer** — live EQ bars + speaking glow on each tile
-- **Admin mode** — random password printed at startup; mute or kick anyone
-- **Themes** — accent colors, animations toggle, mic/camera device pickers
+- **Voice & video** — peer-to-peer WebRTC mesh, up to 12 peers per room
+- **Screen sharing** — Fast or Quality presets, works alongside camera
+- **File sharing** — drag & drop, paste from clipboard, or browse; files persist on disk and serve to the room
+- **Sound pad** — six built-in ringtone clips for mic-less users, rate-limited server-side and client-side
+- **Chat** — chronological timeline merging messages, files, and sound events
+- **Voice visualizer** — live EQ bars and speaking glow per tile
+- **Admin mode** — random password printed at server start; mute or kick anyone
+- **Custom themes** — accent colors, animations toggle, mic/camera device pickers
 - **Layout** — drag-and-drop tiles, per-tile fullscreen, screen share auto-spotlights
-- **Text/chat features** — persists until server restart; files persist on disk
+- **Zero config** — one script bootstraps venv, installs deps, generates certs, starts server
 
 ---
 
 ## Quick Start
 
-### One-click (Windows)
+### Windows
 
 ```bat
 run.bat
