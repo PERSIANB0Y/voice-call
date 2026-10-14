@@ -1,4 +1,3 @@
-```markdown
 <div align="center">
 
 # VoiceChat
@@ -490,4 +489,3 @@ MIT
 Built with [FastAPI](https://fastapi.tiangolo.com/) · [Uvicorn](https://www.uvicorn.org/) · WebRTC · Web Audio API
 
 </div>
-```
